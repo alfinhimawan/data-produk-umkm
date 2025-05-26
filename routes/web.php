@@ -25,7 +25,7 @@ Route::get('/forgot-password', function () {
 
 // Admin routes
 Route::prefix('admin')->group(function () {
-    Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
+    Route::view('/dashboard', 'admin.dashboard.index')->name('admin.dashboard');
     Route::view('/products', 'admin.products.index')->name('products.index');
     Route::view('/categories', 'admin.categories.index')->name('categories.index');
     Route::view('/users', 'admin.users.index')->name('users.index');
