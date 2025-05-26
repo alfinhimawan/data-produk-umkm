@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'foto',
+        'role',
+        'status',
     ];
 
     /**
@@ -39,7 +42,19 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Set the user's password using bcrypt.
+     */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    public function umkmProfiles()
+    {
+        return $this->hasMany(UMKMProfile::class, 'id_users', 'id_users');
+    }
 }

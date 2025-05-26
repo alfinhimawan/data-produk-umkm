@@ -15,7 +15,7 @@
     <div class="container">
         <div class="forms-container">
             <div class="signin-signup">
-                <form action="{{ url('/dashboard') }}" class="sign-in-form">
+                <form action="{{ url('/admin/dashboard') }}" class="sign-in-form">
                     <h2 class="title">Sign in</h2>
                     <div class="input-field">
                         <i class="fas fa-user"></i>

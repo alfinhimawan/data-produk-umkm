@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id_users');
-            $table->string('name', 100);
-            $table->string('email', 150)->unique();
-            $table->string('password', 255);
-            $table->string('foto', 255)->nullable();
-            $table->enum('role', ['admin', 'umkm_owner']);
+        Schema::create('umkm_profiles', function (Blueprint $table) {
+            $table->bigIncrements('id_umkm');
+            $table->unsignedBigInteger('id_users');
+            $table->string('nama_umkm', 150);
+            $table->text('alamat');
+            $table->string('kontak', 50);
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->timestamps();
+
+            $table->foreign('id_users')->references('id_users')->on('users')->onDelete('cascade');
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('umkm_profiles');
     }
 };
