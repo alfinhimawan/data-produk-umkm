@@ -37,6 +37,13 @@
             <span>Produk UMKM</span>
         </a>
     </li>
+    <!-- Manajemen UMKM -->
+    <li class="nav-item {{ request()->is('admin/umkm-profiles*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('umkm-profiles.index') }}">
+            <i class="fas fa-store"></i>
+            <span>Manajemen UMKM</span>
+        </a>
+    </li>
     <hr class="sidebar-divider">
     <div class="sidebar-heading">Laporan & Fitur</div>
     <!-- Laporan Produk -->

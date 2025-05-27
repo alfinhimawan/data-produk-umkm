@@ -35,9 +35,14 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'foto' => 'nullable|string|max:255',
             'role' => 'required|in:admin,umkm_owner',
-            'status' => 'required|in:aktif,nonaktif',
+            'status' => 'nullable|in:aktif,nonaktif',
         ]);
         $validated['password'] = bcrypt($validated['password']);
+        if ($validated['role'] === 'admin') {
+            $validated['status'] = 'aktif';
+        } elseif (!isset($validated['status'])) {
+            $validated['status'] = 'aktif';
+        }
         User::create($validated);
         return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
     }
@@ -72,12 +77,17 @@ class UserController extends Controller
             'password' => 'nullable|string|min:6',
             'foto' => 'nullable|string|max:255',
             'role' => 'required|in:admin,umkm_owner',
-            'status' => 'required|in:aktif,nonaktif',
+            'status' => 'nullable|in:aktif,nonaktif',
         ]);
         if (!empty($validated['password'])) {
             $validated['password'] = bcrypt($validated['password']);
         } else {
             unset($validated['password']);
+        }
+        if ($validated['role'] === 'admin') {
+            $validated['status'] = 'aktif';
+        } elseif (!isset($validated['status'])) {
+            $validated['status'] = 'aktif';
         }
         $user->update($validated);
         return redirect()->route('users.index')->with('success', 'User berhasil diupdate.');

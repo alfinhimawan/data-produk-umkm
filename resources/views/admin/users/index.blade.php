@@ -35,22 +35,21 @@
                             <td>1</td>
                             <td>Ahmad Fauzi</td>
                             <td>ahmad@email.com</td>
-                            <td>umkm_owner</td>
+                            <td>admin</td>
                             <td><img src="{{ asset('img/user1.jpg') }}" alt="Foto" class="img-thumbnail" width="50"></td>
                             <td><span class="badge badge-success">Aktif</span></td>
                             <td>
                                 <a href="#" class="btn btn-info btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
                                 <a href="#" class="btn btn-warning btn-sm" title="Reset Password"><i class="fas fa-key"></i></a>
-                                <a href="#" class="btn btn-danger btn-sm" title="Nonaktifkan"><i class="fas fa-user-slash"></i></a>
                             </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Siti Aminah</td>
                             <td>siti@email.com</td>
-                            <td>admin</td>
+                            <td>umkm_owner</td>
                             <td><img src="{{ asset('img/user2.jpg') }}" alt="Foto" class="img-thumbnail" width="50"></td>
-                            <td><span class="badge badge-danger">Nonaktif</span></td>
+                            <td><span class="badge badge-danger">Nonaktif</span>
                             <td>
                                 <a href="#" class="btn btn-info btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
                                 <a href="#" class="btn btn-warning btn-sm" title="Reset Password"><i class="fas fa-key"></i></a>
@@ -114,7 +113,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="role">Role</label>
-                                    <select class="form-control" id="role">
+                                    <select class="form-control" id="role" onchange="toggleStatusDropdown()">
                                         <option value="" selected disabled>Pilih Role</option>
                                         <option value="umkm_owner">UMKM Owner</option>
                                         <option value="admin">Admin</option>
@@ -122,7 +121,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="status">Status</label>
-                                    <select class="form-control" id="status">
+                                    <select class="form-control" id="status" disabled>
                                         <option value="" selected disabled>Pilih Status</option>
                                         <option value="aktif">Aktif</option>
                                         <option value="nonaktif">Nonaktif</option>
@@ -178,6 +177,20 @@
             input.type = 'password';
             icon.classList.remove('fa-eye-slash');
             icon.classList.add('fa-eye');
+        }
+    }
+    function toggleStatusDropdown() {
+        var role = document.getElementById('role').value;
+        var status = document.getElementById('status');
+        if (role === 'umkm_owner') {
+            status.disabled = false;
+            status.value = '';
+        } else if (role === 'admin') {
+            status.value = 'aktif';
+            status.disabled = true;
+        } else {
+            status.value = '';
+            status.disabled = true;
         }
     }
     $(document).ready(function() {

@@ -31,4 +31,5 @@ Route::prefix('admin')->group(function () {
     Route::view('/users', 'admin.users.index')->name('users.index');
     Route::view('/reports', 'admin.reports.index')->name('reports.index');
     Route::view('/products/search', 'admin.products.search')->name('products.search');
+    Route::view('/umkm-profiles', 'admin.umkm_profiles.index')->name('umkm-profiles.index');
 });
