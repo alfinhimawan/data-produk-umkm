@@ -37,27 +37,20 @@
             <span>Produk UMKM</span>
         </a>
     </li>
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">Laporan & Kelola UMKM</div>
     <!-- Manajemen UMKM -->
     <li class="nav-item {{ request()->is('admin/umkm-profiles*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('umkm-profiles.index') }}">
             <i class="fas fa-store"></i>
-            <span>Manajemen UMKM</span>
+            <span>Daftar UMKM</span>
         </a>
     </li>
-    <hr class="sidebar-divider">
-    <div class="sidebar-heading">Laporan & Fitur</div>
     <!-- Laporan Produk -->
     <li class="nav-item {{ request()->is('admin/reports*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('admin/reports') }}">
             <i class="fas fa-chart-bar"></i>
             <span>Laporan Produk</span>
-        </a>
-    </li>
-    <!-- Search & Filter Produk -->
-    <li class="nav-item {{ request()->is('admin/products/search') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ url('admin/products/search') }}">
-            <i class="fas fa-search"></i>
-            <span>Search & Filter Produk</span>
         </a>
     </li>
     <hr class="sidebar-divider d-none d-md-block">

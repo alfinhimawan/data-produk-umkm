@@ -13,25 +13,26 @@
         <h6 class="m-0 font-weight-bold text-primary">Filter Laporan</h6>
     </div>
     <div class="card-body">
-        <form class="form-inline mb-3">
+        <form class="form-inline mb-3" method="GET" action="{{ route('reports.index') }}">
             <div class="form-group mr-3">
                 <label for="filter_kategori" class="mr-2">Kategori</label>
-                <select class="form-control" id="filter_kategori">
+                <select class="form-control" id="filter_kategori" name="kategori">
                     <option value="" selected>Semua Kategori</option>
-                    <option value="Makanan">Makanan</option>
-                    <option value="Minuman">Minuman</option>
-                    <option value="Kerajinan">Kerajinan</option>
+                    @foreach($categories as $kategori)
+                        <option value="{{ $kategori->id_kategori }}" {{ request('kategori') == $kategori->id_kategori ? 'selected' : '' }}>{{ $kategori->nama_kategori }}</option>
+                    @endforeach
                 </select>
             </div>
             <div class="form-group mr-3">
                 <label for="filter_umkm" class="mr-2">UMKM</label>
-                <select class="form-control" id="filter_umkm">
+                <select class="form-control" id="filter_umkm" name="umkm">
                     <option value="" selected>Semua UMKM</option>
-                    <option value="UMKM Sari Rasa">UMKM Sari Rasa</option>
-                    <option value="UMKM Pisang Jaya">UMKM Pisang Jaya</option>
+                    @foreach($umkmProfiles as $umkm)
+                        <option value="{{ $umkm->id_umkm }}" {{ request('umkm') == $umkm->id_umkm ? 'selected' : '' }}>{{ $umkm->nama_umkm }}</option>
+                    @endforeach
                 </select>
             </div>
-            <button type="button" class="btn btn-primary"><i class="fas fa-filter mr-1"></i> Filter</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-filter mr-1"></i> Filter</button>
             <button type="button" class="btn btn-success ml-2"><i class="fas fa-file-excel mr-1"></i> Export Excel</button>
         </form>
         <div class="table-responsive">
@@ -43,27 +44,34 @@
                         <th>Kategori</th>
                         <th>UMKM</th>
                         <th>Harga</th>
+                        <th>Foto</th>
                         <th>Status UMKM</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Contoh data statis -->
+                    @forelse ($products as $index => $product)
                     <tr>
-                        <td>1</td>
-                        <td>Kue Lapis Legit</td>
-                        <td>Makanan</td>
-                        <td>UMKM Sari Rasa</td>
-                        <td>Rp 50.000</td>
-                        <td><span class="badge badge-success">Aktif</span></td>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $product->nama_produk }}</td>
+                        <td>{{ $product->category->nama_kategori ?? '-' }}</td>
+                        <td>{{ $product->umkmProfile->nama_umkm ?? '-' }}</td>
+                        <td>Rp {{ number_format($product->harga, 0, ',', '.') }}</td>
+                        <td>
+                            @if ($product->foto)
+                                <img src="{{ asset($product->foto) }}" alt="Foto" class="img-thumbnail" width="60">
+                            @else
+                                <img src="{{ asset('img/default-produk.png') }}" alt="Foto" class="img-thumbnail" width="60">
+                            @endif
+                        </td>
+                        <td>
+                            @if ($product->umkmProfile && $product->umkmProfile->status === 'aktif')
+                                <span class="badge badge-success">Aktif</span>
+                            @else
+                                <span class="badge badge-danger">Nonaktif</span>
+                            @endif
+                        </td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Keripik Pisang</td>
-                        <td>Makanan</td>
-                        <td>UMKM Pisang Jaya</td>
-                        <td>Rp 20.000</td>
-                        <td><span class="badge badge-danger">Nonaktif</span></td>
-                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>

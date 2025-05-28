@@ -12,12 +12,27 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['umkmProfile', 'category'])->get();
+        $query = Product::with(['umkmProfile', 'category']);
+        if ($request->filled('nama')) {
+            $query->where('nama_produk', 'like', '%' . $request->nama . '%');
+        }
+        if ($request->filled('kategori')) {
+            $query->where('id_kategori', $request->kategori);
+        }
+        if ($request->filled('umkm')) {
+            $query->where('id_umkm', $request->umkm);
+        }
+        if ($request->filled('status')) {
+            $query->whereHas('umkmProfile', function($q) use ($request) {
+                $q->where('status', $request->status);
+            });
+        }
+        $products = $query->get();
         $categories = Category::all();
         $umkmProfiles = UMKMProfile::all();
-        return view('admin.products.index', compact('products', 'categories', 'umkmProfiles'));
+        return view('admin.products.index', compact('products', 'categories', 'umkmProfiles', 'request'));
     }
 
     /**
@@ -108,31 +123,5 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus.');
-    }
-
-    /**
-     * Search for products based on various criteria.
-     */
-    public function search(Request $request)
-    {
-        $query = Product::with(['umkmProfile', 'category']);
-        if ($request->filled('nama')) {
-            $query->where('nama_produk', 'like', '%' . $request->nama . '%');
-        }
-        if ($request->filled('kategori')) {
-            $query->where('id_kategori', $request->kategori);
-        }
-        if ($request->filled('umkm')) {
-            $query->where('id_umkm', $request->umkm);
-        }
-        if ($request->filled('status')) {
-            $query->whereHas('umkmProfile', function($q) use ($request) {
-                $q->where('status', $request->status);
-            });
-        }
-        $products = $query->get();
-        $categories = Category::all();
-        $umkmProfiles = UMKMProfile::all();
-        return view('admin.products.search', compact('products', 'categories', 'umkmProfiles', 'request'));
     }
 }

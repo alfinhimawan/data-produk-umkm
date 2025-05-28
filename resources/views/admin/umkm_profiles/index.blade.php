@@ -1,10 +1,10 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Manajemen UMKM')
+@section('title', 'Daftar UMKM')
 
 @section('content')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Manajemen UMKM</h1>
+        <h1 class="h3 mb-0 text-gray-800">Daftar UMKM</h1>
     </div>
 
     @if (session('success'))
