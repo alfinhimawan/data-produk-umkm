@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class UMKMProfile extends Model
 {
     use HasFactory;
+    protected $table = 'umkm_profiles';
+    protected $primaryKey = 'id_umkm';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
         'id_users',

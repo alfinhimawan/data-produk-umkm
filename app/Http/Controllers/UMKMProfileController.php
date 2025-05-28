@@ -14,7 +14,7 @@ class UMKMProfileController extends Controller
     public function index()
     {
         $umkmProfiles = UMKMProfile::with('user')->get();
-        return view('umkm_profiles.index', compact('umkmProfiles'));
+        return view('admin.umkm_profiles.index', compact('umkmProfiles'));
     }
 
     /**
@@ -23,7 +23,7 @@ class UMKMProfileController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('umkm_profiles.create', compact('users'));
+        return view('admin.umkm_profiles.create', compact('users'));
     }
 
     /**
@@ -48,7 +48,7 @@ class UMKMProfileController extends Controller
     public function show($id)
     {
         $umkmProfile = UMKMProfile::with('user')->findOrFail($id);
-        return view('umkm_profiles.show', compact('umkmProfile'));
+        return view('admin.umkm_profiles.show', compact('umkmProfile'));
     }
 
     /**
@@ -58,7 +58,7 @@ class UMKMProfileController extends Controller
     {
         $umkmProfile = UMKMProfile::findOrFail($id);
         $users = User::all();
-        return view('umkm_profiles.edit', compact('umkmProfile', 'users'));
+        return view('admin.umkm_profiles.edit', compact('umkmProfile', 'users'));
     }
 
     /**
@@ -67,6 +67,11 @@ class UMKMProfileController extends Controller
     public function update(Request $request, $id)
     {
         $umkmProfile = UMKMProfile::findOrFail($id);
+        // Jika hanya update status
+        if ($request->has('status') && !$request->has('nama_umkm') && !$request->has('alamat') && !$request->has('kontak')) {
+            $umkmProfile->update(['status' => $request->status]);
+            return redirect()->route('umkm-profiles.index')->with('success', 'Status UMKM berhasil diubah.');
+        }
         $validated = $request->validate([
             'id_users' => 'required|exists:users,id_users',
             'nama_umkm' => 'required|string|max:150',

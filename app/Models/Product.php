@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id_product';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
         'id_product',

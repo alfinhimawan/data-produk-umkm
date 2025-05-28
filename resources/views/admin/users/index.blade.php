@@ -10,6 +10,43 @@
         </a>
     </div>
 
+    <!-- Alert modern -->
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show rounded-pill shadow-sm px-4 py-3 d-flex align-items-center"
+            role="alert" style="font-size:1.05rem;">
+            <i class="fas fa-check-circle fa-lg mr-3"></i> <span>{{ session('success') }}</span>
+            <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Close" style="outline:none;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger alert-dismissible fade show rounded-pill shadow-sm px-4 py-3 d-flex align-items-center"
+            role="alert" style="font-size:1.05rem;">
+            <i class="fas fa-times-circle fa-lg mr-3"></i> <span>{{ session('error') }}</span>
+            <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Close" style="outline:none;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger alert-dismissible fade show rounded shadow-sm px-4 py-3" role="alert"
+            style="font-size:1.05rem;">
+            <div class="d-flex align-items-center mb-2"><i class="fas fa-exclamation-triangle fa-lg mr-2"></i>
+                <strong>Validasi Gagal</strong>
+            </div>
+            <ul class="mb-0 pl-4">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="outline:none;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    <!-- END Alert modern -->
+
     <!-- Tabel User -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -30,33 +67,63 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Contoh data statis -->
-                        <tr>
-                            <td>1</td>
-                            <td>Ahmad Fauzi</td>
-                            <td>ahmad@email.com</td>
-                            <td>admin</td>
-                            <td><img src="{{ asset('img/user1.jpg') }}" alt="Foto" class="img-thumbnail" width="50"></td>
-                            <td><span class="badge badge-success">Aktif</span></td>
-                            <td>
-                                <a href="#" class="btn btn-info btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="btn btn-warning btn-sm" title="Reset Password"><i class="fas fa-key"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Siti Aminah</td>
-                            <td>siti@email.com</td>
-                            <td>umkm_owner</td>
-                            <td><img src="{{ asset('img/user2.jpg') }}" alt="Foto" class="img-thumbnail" width="50"></td>
-                            <td><span class="badge badge-danger">Nonaktif</span>
-                            <td>
-                                <a href="#" class="btn btn-info btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="btn btn-warning btn-sm" title="Reset Password"><i class="fas fa-key"></i></a>
-                                <a href="#" class="btn btn-success btn-sm" title="Aktifkan"><i class="fas fa-user-check"></i></a>
-                            </td>
-                        </tr>
-
+                        @foreach ($users as $index => $user)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->role }}</td>
+                                <td>
+                                    @if ($user->foto)
+                                        <img src="{{ asset($user->foto) }}" alt="Foto" class="img-thumbnail"
+                                            width="50">
+                                    @else
+                                        <img src="{{ asset('img/default-user.png') }}" alt="Foto" class="img-thumbnail"
+                                            width="50">
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($user->status === 'aktif')
+                                        <span class="badge badge-success">Aktif</span>
+                                    @else
+                                        <span class="badge badge-danger">Nonaktif</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-info btn-sm btn-edit-user" title="Edit"
+                                        data-toggle="modal" data-target="#modalEditUser"
+                                        data-user='@json($user)'><i class="fas fa-edit"></i></a>
+                                    @if ($user->role === 'umkm_owner')
+                                        @if ($user->status === 'aktif')
+                                            <form action="{{ route('users.update', $user->id_users) }}" method="POST"
+                                                style="display:inline-block;">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="status" value="nonaktif">
+                                                <button type="submit" class="btn btn-danger btn-sm" title="Nonaktifkan"><i
+                                                        class="fas fa-user-slash"></i></button>
+                                            </form>
+                                        @else
+                                            <form action="{{ route('users.update', $user->id_users) }}" method="POST"
+                                                style="display:inline-block;">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="status" value="aktif">
+                                                <button type="submit" class="btn btn-success btn-sm" title="Aktifkan"><i
+                                                        class="fas fa-user-check"></i></button>
+                                            </form>
+                                        @endif
+                                        <form action="{{ route('users.destroy', $user->id_users) }}" method="POST"
+                                            style="display:inline-block;" class="form-hapus-user">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm btn-hapus-user"
+                                                title="Hapus"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -64,141 +131,12 @@
     </div>
 
     <!-- Modal Tambah User -->
-    <div class="modal fade" id="modalTambahUser" tabindex="-1" role="dialog" aria-labelledby="modalTambahUserLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="modalTambahUserLabel"><i class="fas fa-user-plus mr-2"></i>Tambah User UMKM</h5>
-                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="nama">Nama</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                        </div>
-                                        <input type="text" class="form-control" id="nama" placeholder="Nama User">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                        </div>
-                                        <input type="email" class="form-control" id="email" placeholder="Email">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-key"></i></span>
-                                        </div>
-                                        <input type="password" class="form-control" id="password" placeholder="Password">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword()">
-                                                <i class="fas fa-eye" id="togglePasswordIcon"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="role">Role</label>
-                                    <select class="form-control" id="role" onchange="toggleStatusDropdown()">
-                                        <option value="" selected disabled>Pilih Role</option>
-                                        <option value="umkm_owner">UMKM Owner</option>
-                                        <option value="admin">Admin</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="status">Status</label>
-                                    <select class="form-control" id="status" disabled>
-                                        <option value="" selected disabled>Pilih Status</option>
-                                        <option value="aktif">Aktif</option>
-                                        <option value="nonaktif">Nonaktif</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="foto">Foto</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-image"></i></span>
-                                        </div>
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="foto" onchange="previewFoto(event)">
-                                            <label class="custom-file-label" for="foto">Pilih foto...</label>
-                                        </div>
-                                    </div>
-                                    <div class="mt-2">
-                                        <img id="preview-img" src="{{ asset('img/default-user.png') }}" alt="Preview" class="img-thumbnail border-primary" width="80" style="object-fit:cover;">
-                                    </div>
-                                    <small class="form-text text-muted">Format: JPG, PNG. Maks 2MB.</small>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Simpan</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('admin.users._modal_tambah_user')
+
+    <!-- Modal Edit User -->
+    @include('admin.users._modal_edit_user')
 @endsection
 
 @push('scripts')
-<script>
-    function previewFoto(event) {
-        const [file] = event.target.files;
-        if (file) {
-            document.getElementById('preview-img').src = URL.createObjectURL(file);
-            const label = document.querySelector('label[for="foto"].custom-file-label');
-            if (label) label.textContent = file.name;
-        }
-    }
-    function togglePassword() {
-        const input = document.getElementById('password');
-        const icon = document.getElementById('togglePasswordIcon');
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            input.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
-    }
-    function toggleStatusDropdown() {
-        var role = document.getElementById('role').value;
-        var status = document.getElementById('status');
-        if (role === 'umkm_owner') {
-            status.disabled = false;
-            status.value = '';
-        } else if (role === 'admin') {
-            status.value = 'aktif';
-            status.disabled = true;
-        } else {
-            status.value = '';
-            status.disabled = true;
-        }
-    }
-    $(document).ready(function() {
-        $('.table').DataTable();
-        $('.custom-file-input').on('change', function() {
-            var fileName = $(this).val().split('\\').pop();
-            $(this).next('.custom-file-label').addClass("selected").html(fileName);
-        });
-    });
-</script>
+    <script src="{{ asset('js/admin-users.js') }}"></script>
 @endpush

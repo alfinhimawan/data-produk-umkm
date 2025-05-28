@@ -15,7 +15,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::with(['umkmProfile', 'category'])->get();
-        return view('products.index', compact('products'));
+        $categories = Category::all();
+        $umkmProfiles = UMKMProfile::all();
+        return view('admin.products.index', compact('products', 'categories', 'umkmProfiles'));
     }
 
     /**
@@ -25,7 +27,7 @@ class ProductController extends Controller
     {
         $umkmProfiles = UMKMProfile::all();
         $categories = Category::all();
-        return view('products.create', compact('umkmProfiles', 'categories'));
+        return view('admin.products.create', compact('umkmProfiles', 'categories'));
     }
 
     /**
@@ -39,8 +41,14 @@ class ProductController extends Controller
             'nama_produk' => 'required|string|max:150',
             'harga' => 'required|numeric',
             'deskripsi' => 'required|string',
-            'foto' => 'nullable|string|max:255',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $namaFile = time() . '_' . $foto->getClientOriginalName();
+            $foto->move(public_path('image'), $namaFile);
+            $validated['foto'] = 'image/' . $namaFile;
+        }
         Product::create($validated);
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -51,7 +59,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::with(['umkmProfile', 'category'])->findOrFail($id);
-        return view('products.show', compact('product'));
+        return view('admin.products.show', compact('product'));
     }
 
     /**
@@ -62,7 +70,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $umkmProfiles = UMKMProfile::all();
         $categories = Category::all();
-        return view('products.edit', compact('product', 'umkmProfiles', 'categories'));
+        return view('admin.products.edit', compact('product', 'umkmProfiles', 'categories'));
     }
 
     /**
@@ -77,8 +85,17 @@ class ProductController extends Controller
             'nama_produk' => 'required|string|max:150',
             'harga' => 'required|numeric',
             'deskripsi' => 'required|string',
-            'foto' => 'nullable|string|max:255',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+        if ($request->hasFile('foto')) {
+            if ($product->foto && file_exists(public_path($product->foto))) {
+                unlink(public_path($product->foto));
+            }
+            $foto = $request->file('foto');
+            $namaFile = time() . '_' . $foto->getClientOriginalName();
+            $foto->move(public_path('image'), $namaFile);
+            $validated['foto'] = 'image/' . $namaFile;
+        }
         $product->update($validated);
         return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate.');
     }
@@ -91,5 +108,31 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus.');
+    }
+
+    /**
+     * Search for products based on various criteria.
+     */
+    public function search(Request $request)
+    {
+        $query = Product::with(['umkmProfile', 'category']);
+        if ($request->filled('nama')) {
+            $query->where('nama_produk', 'like', '%' . $request->nama . '%');
+        }
+        if ($request->filled('kategori')) {
+            $query->where('id_kategori', $request->kategori);
+        }
+        if ($request->filled('umkm')) {
+            $query->where('id_umkm', $request->umkm);
+        }
+        if ($request->filled('status')) {
+            $query->whereHas('umkmProfile', function($q) use ($request) {
+                $q->where('status', $request->status);
+            });
+        }
+        $products = $query->get();
+        $categories = Category::all();
+        $umkmProfiles = UMKMProfile::all();
+        return view('admin.products.search', compact('products', 'categories', 'umkmProfiles', 'request'));
     }
 }

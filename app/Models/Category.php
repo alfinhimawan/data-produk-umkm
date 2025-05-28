@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
+    protected $primaryKey = 'id_kategori';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
         'id_kategori',

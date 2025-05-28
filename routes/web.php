@@ -26,10 +26,10 @@ Route::get('/forgot-password', function () {
 // Admin routes
 Route::prefix('admin')->group(function () {
     Route::view('/dashboard', 'admin.dashboard.index')->name('admin.dashboard');
-    Route::view('/products', 'admin.products.index')->name('products.index');
-    Route::view('/categories', 'admin.categories.index')->name('categories.index');
-    Route::view('/users', 'admin.users.index')->name('users.index');
+    Route::resource('categories', App\Http\Controllers\CategoryController::class);
+    Route::resource('products', App\Http\Controllers\ProductController::class);
+    Route::resource('users', App\Http\Controllers\UserController::class);
     Route::view('/reports', 'admin.reports.index')->name('reports.index');
-    Route::view('/products/search', 'admin.products.search')->name('products.search');
-    Route::view('/umkm-profiles', 'admin.umkm_profiles.index')->name('umkm-profiles.index');
+    Route::get('/products/search', [App\Http\Controllers\ProductController::class, 'search'])->name('products.search');
+    Route::resource('umkm-profiles', App\Http\Controllers\UMKMProfileController::class);
 });
