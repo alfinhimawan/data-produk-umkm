@@ -61,8 +61,8 @@ class ProductController extends Controller
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto');
             $namaFile = time() . '_' . $foto->getClientOriginalName();
-            $foto->move(public_path('image'), $namaFile);
-            $validated['foto'] = 'image/' . $namaFile;
+            $foto->move(public_path('image/products'), $namaFile);
+            $validated['foto'] = 'image/products/' . $namaFile;
         }
         Product::create($validated);
         return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan.');
@@ -108,8 +108,8 @@ class ProductController extends Controller
             }
             $foto = $request->file('foto');
             $namaFile = time() . '_' . $foto->getClientOriginalName();
-            $foto->move(public_path('image'), $namaFile);
-            $validated['foto'] = 'image/' . $namaFile;
+            $foto->move(public_path('image/products'), $namaFile);
+            $validated['foto'] = 'image/products/' . $namaFile;
         }
         $product->update($validated);
         return redirect()->route('products.index')->with('success', 'Produk berhasil diupdate.');

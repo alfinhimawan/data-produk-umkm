@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('nama_umkm', 150);
             $table->text('alamat');
             $table->string('kontak', 50);
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+            $table->string('logo', 255)->nullable();
+            $table->enum('status', ['aktif', 'nonaktif'])->default('nonaktif');
             $table->timestamps();
 
             $table->foreign('id_users')->references('id_users')->on('users')->onDelete('cascade');

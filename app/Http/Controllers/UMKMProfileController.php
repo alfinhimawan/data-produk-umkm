@@ -37,7 +37,14 @@ class UMKMProfileController extends Controller
             'alamat' => 'required|string',
             'kontak' => 'required|string|max:50',
             'status' => 'required|in:aktif,nonaktif',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+        if ($request->hasFile('logo')) {
+            $logo = $request->file('logo');
+            $namaFile = time() . '_' . $logo->getClientOriginalName();
+            $logo->move(public_path('image/logo'), $namaFile);
+            $validated['logo'] = 'image/logo/' . $namaFile;
+        }
         UMKMProfile::create($validated);
         return redirect()->route('umkm-profiles.index')->with('success', 'UMKM Profile berhasil ditambahkan.');
     }
@@ -67,18 +74,23 @@ class UMKMProfileController extends Controller
     public function update(Request $request, $id)
     {
         $umkmProfile = UMKMProfile::findOrFail($id);
-        // Jika hanya update status
-        if ($request->has('status') && !$request->has('nama_umkm') && !$request->has('alamat') && !$request->has('kontak')) {
-            $umkmProfile->update(['status' => $request->status]);
-            return redirect()->route('umkm-profiles.index')->with('success', 'Status UMKM berhasil diubah.');
-        }
         $validated = $request->validate([
             'id_users' => 'required|exists:users,id_users',
             'nama_umkm' => 'required|string|max:150',
             'alamat' => 'required|string',
             'kontak' => 'required|string|max:50',
             'status' => 'required|in:aktif,nonaktif',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
+        if ($request->hasFile('logo')) {
+            if ($umkmProfile->logo && file_exists(public_path($umkmProfile->logo))) {
+                unlink(public_path($umkmProfile->logo));
+            }
+            $logo = $request->file('logo');
+            $namaFile = time() . '_' . $logo->getClientOriginalName();
+            $logo->move(public_path('image/logo'), $namaFile);
+            $validated['logo'] = 'image/logo/' . $namaFile;
+        }
         $umkmProfile->update($validated);
         return redirect()->route('umkm-profiles.index')->with('success', 'UMKM Profile berhasil diupdate.');
     }

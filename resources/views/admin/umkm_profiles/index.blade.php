@@ -56,6 +56,7 @@
                             <th>Nama Usaha</th>
                             <th>Alamat</th>
                             <th>Nomor WA</th>
+                            <th>Logo</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -68,6 +69,15 @@
                                 <td>{{ $umkm->nama_umkm }}</td>
                                 <td>{{ $umkm->alamat }}</td>
                                 <td>{{ $umkm->kontak }}</td>
+                                <td>
+                                    @if ($umkm->logo)
+                                        <img src="{{ asset($umkm->logo) }}" alt="Logo" class="img-thumbnail"
+                                            width="50">
+                                    @else
+                                        <img src="{{ asset('img/default-user.png') }}" alt="Logo" class="img-thumbnail"
+                                            width="50">
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($umkm->status === 'aktif')
                                         <span class="badge badge-success">Aktif</span>

@@ -18,6 +18,7 @@ class UMKMProfile extends Model
         'nama_umkm',
         'alamat',
         'kontak',
+        'logo',
         'status',
         'created_at',
         'updated_at',

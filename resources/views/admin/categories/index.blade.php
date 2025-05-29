@@ -96,5 +96,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/admin-categories.js') }}"></script>
+    <script src="{{ asset('js/admin/admin-categories.js') }}"></script>
 @endpush

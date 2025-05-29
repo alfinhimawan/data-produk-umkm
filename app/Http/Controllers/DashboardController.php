@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $jumlahProduk = Product::count();
         $jumlahUMKM = UMKMProfile::where('status', 'aktif')->count();
         $jumlahKategori = Category::count();
-        $jumlahUser = User::count();
+        $jumlahUser = User::where('status', 'aktif')->count();
 
         $umkmPerBulan = UMKMProfile::selectRaw('MONTH(created_at) as bulan, COUNT(*) as total')
             ->whereYear('created_at', date('Y'))

@@ -41,8 +41,8 @@ class UserController extends Controller
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto');
             $namaFile = time() . '_' . $foto->getClientOriginalName();
-            $foto->move(public_path('image'), $namaFile);
-            $validated['foto'] = 'image/' . $namaFile;
+            $foto->move(public_path('image/users'), $namaFile);
+            $validated['foto'] = 'image/users/' . $namaFile;
         }
         $validated['password'] = bcrypt($validated['password']);
         if ($validated['role'] === 'admin') {
@@ -96,8 +96,8 @@ class UserController extends Controller
             }
             $foto = $request->file('foto');
             $namaFile = time() . '_' . $foto->getClientOriginalName();
-            $foto->move(public_path('image'), $namaFile);
-            $validated['foto'] = 'image/' . $namaFile;
+            $foto->move(public_path('image/users'), $namaFile);
+            $validated['foto'] = 'image/users/' . $namaFile;
         }
         if (!empty($validated['password'])) {
             $validated['password'] = bcrypt($validated['password']);

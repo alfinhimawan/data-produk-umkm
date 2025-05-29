@@ -105,7 +105,7 @@
                         style="min-height:260;">
                         <canvas id="umkmPieChart" style="max-width:260;"></canvas>
                     </div>
-                    <div class="mt-4 d-flex flex-column">
+                    <div class="mt-3 d-flex flex-column">
                         <div class="text-center small mb-2">
                             <span class="mr-3 pie-filter" data-status="Aktif" style="cursor:pointer;">
                                 <i class="fas fa-circle" style="color:#1cc88a"></i> Aktif
@@ -133,6 +133,5 @@
 @endsection
 
 @push('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ asset('js/admin-dashboard.js') }}"></script>
+    <script src="{{ asset('js/admin/admin-dashboard.js') }}"></script>
 @endpush
