@@ -14,16 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Authentication
-Route::get('/', function () {
-    return view('auth.login');
-});
-
-Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
-});
+Route::get('/', [App\Http\Controllers\AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login.attempt');
+Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 
 // Admin routes
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('admin.dashboard');
     Route::resource('categories', App\Http\Controllers\CategoryController::class);
     Route::resource('products', App\Http\Controllers\ProductController::class);
@@ -33,10 +29,8 @@ Route::prefix('admin')->group(function () {
 });
 
 // Owner routes
-Route::prefix('owner')->group(function () {
-    Route::get('dashboard', function () {
-        return view('owner.dashboard.dashboard');
-    })->name('owner.dashboard');
+Route::prefix('owner')->middleware(['auth', 'role:umkm_owner', 'umkmprofile.exists'])->group(function () {
+    Route::get('dashboard', [App\Http\Controllers\OwnerDashboardController::class, 'index'])->name('owner.dashboard');
     Route::resource('products', App\Http\Controllers\OwnerProductController::class, [
         'as' => 'owner'
     ]);
@@ -48,5 +42,4 @@ Route::prefix('owner')->group(function () {
         $umkm = \App\Models\UMKMProfile::with('user')->first();
         return view('owner.umkm-profile.index', compact('umkm'));
     })->name('owner.umkm-profile');
-    // ...route fitur owner lain nanti di sini...
 });

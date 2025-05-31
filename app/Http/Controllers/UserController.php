@@ -44,7 +44,6 @@ class UserController extends Controller
             $foto->move(public_path('image/users'), $namaFile);
             $validated['foto'] = 'image/users/' . $namaFile;
         }
-        $validated['password'] = bcrypt($validated['password']);
         if ($validated['role'] === 'admin') {
             $validated['status'] = 'aktif';
         } elseif (!isset($validated['status'])) {

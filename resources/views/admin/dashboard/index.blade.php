@@ -3,6 +3,9 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
+    @if (session('success'))
+        <div id="auth-alert" data-type="success" data-message="{{ session('success') }}" style="display:none;"></div>
+    @endif
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Dashboard Admin</h1>
@@ -81,11 +84,10 @@
 
     <!-- Content Row: Grafik & Pie Chart -->
     <div class="row">
-        <!-- Area Chart: UMKM Baru per Bulan -->
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">UMKM Baru per Bulan ({{ date('Y') }})</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Grafik UMKM Baru per Bulan ({{ date('Y') }})</h6>
                 </div>
                 <div class="card-body">
                     <div class="chart-area">
@@ -94,7 +96,6 @@
                 </div>
             </div>
         </div>
-        <!-- Pie Chart: Status UMKM -->
         <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -105,16 +106,8 @@
                         style="min-height:260;">
                         <canvas id="umkmPieChart" style="max-width:260;"></canvas>
                     </div>
-                    <div class="mt-3 d-flex flex-column">
-                        <div class="text-center small mb-2">
-                            <span class="mr-3 pie-filter" data-status="Aktif" style="cursor:pointer;">
-                                <i class="fas fa-circle" style="color:#1cc88a"></i> Aktif
-                            </span>
-                            <span class="mr-3 pie-filter" data-status="Nonaktif" style="cursor:pointer;">
-                                <i class="fas fa-circle" style="color:#e74a3b"></i> Nonaktif
-                            </span>
-                        </div>
-                    </div>
+                    {{-- legend status UMKM dihapus --}}
+                    <div style="min-height:43px;"></div>
                 </div>
             </div>
         </div>
@@ -133,5 +126,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/admin/admin-dashboard.js') }}"></script>
+    <script src="{{ asset('js/admin/admin-dashboard-umkm.js') }}"></script>
 @endpush

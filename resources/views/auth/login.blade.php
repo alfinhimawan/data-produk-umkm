@@ -3,106 +3,124 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" type="text/css">
-    <!-- Custom CSS -->
+    <title>Sign in Form</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-    <title>Sign in & Sign up Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <!-- Vanta.js & Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="forms-container">
-            <div class="signin-signup">
-                <form action="{{ url('/admin/dashboard') }}" class="sign-in-form">
-                    <h2 class="title">Sign in</h2>
-                    <div class="input-field">
-                        <i class="fas fa-user"></i>
-                        <input type="text" placeholder="Username" />
+    <div id="vanta-bg"></div>
+    <main>
+        <div class="box">
+            <div class="inner-box">
+                <div class="forms-wrap">
+                    <form action="{{ route('login.attempt') }}" method="POST" autocomplete="off" class="sign-in-form">
+                        @csrf
+                        <div class="logo">
+                            <img src="{{ asset('img/logo.png') }}" alt="easyclass" />
+                            <h4>MyUMKM</h4>
+                        </div>
+
+                        <div class="heading">
+                            <h2>Welcome Back</h2>
+                        </div>
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger"
+                                style="font-size:0.95rem; border-radius:0.5rem; margin-bottom:1rem;">
+                                <ul class="mb-0" style="padding-left:1.2rem;">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        @if (session('success'))
+                            <div id="auth-alert" data-type="success" data-message="{{ session('success') }}"
+                                style="display:none;"></div>
+                        @endif
+                        @if (session('error'))
+                            <div id="auth-alert" data-type="error" data-message="{{ session('error') }}"
+                                style="display:none;"></div>
+                        @endif
+
+                        <div class="actual-form">
+                            <div class="input-wrap">
+                                <div class="label-with-icon">
+                                    <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                    <label>Email</label>
+                                </div>
+                                <input type="email" name="email" class="input-field" autocomplete="off" required />
+                            </div>
+
+                            <div class="input-wrap" style="position:relative;">
+                                <div class="label-with-icon">
+                                    <span class="input-icon"><i class="fas fa-lock"></i></span>
+                                    <label>Password</label>
+                                </div>
+                                <input type="password" name="password" class="input-field" id="login-password"
+                                    autocomplete="off" required />
+                                <span class="toggle-password" onclick="togglePasswordVisibility()"><i class="fas fa-eye"
+                                        id="togglePasswordIcon"></i></span>
+                            </div>
+
+                            <input type="submit" value="Sign In" class="sign-btn" />
+
+                            <div class="Or-Sign-Up-Using">
+                                <span class="or-text">Or Sign In Using</span>
+                                <div class="login-social-icons">
+                                    <a href="#" class="social-icon google"><img
+                                            src="{{ asset('img/social/google.svg') }}" alt="Google" /></a>
+                                    <a href="#" class="social-icon facebook"><img
+                                            src="{{ asset('img/social/facebook.svg') }}" alt="Facebook" /></a>
+                                    <a href="#" class="social-icon apple"><img
+                                            src="{{ asset('img/social/apple.svg') }}" alt="Apple" /></a>
+                                </div>
+                            </div>
+
+                            <p class="text">
+                                Forgotten your password or your login details?
+                                <a href="#">Get help</a> signing in
+                            </p>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="carousel">
+                    <div class="images-wrapper">
+                        <img src="{{ asset('img/image1.png') }}" class="image img-1 show" alt="" />
+                        <img src="{{ asset('img/image2.png') }}" class="image img-2" alt="" />
+                        <img src="{{ asset('img/image3.png') }}" class="image img-3" alt="" />
                     </div>
-                    <div class="input-field">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" placeholder="Password" />
+
+                    <div class="text-slider">
+                        <div class="text-wrap">
+                            <div class="text-group">
+                                <h2>Create your own courses</h2>
+                                <h2>Customize as you like</h2>
+                                <h2>Invite students to your class</h2>
+                            </div>
+                        </div>
+
+                        <div class="bullets">
+                            <span class="active" data-value="1"></span>
+                            <span data-value="2"></span>
+                            <span data-value="3"></span>
+                        </div>
                     </div>
-                    <input type="submit" value="Login" class="btn solid" />
-                    <p class="social-text">Or Sign in with social platforms</p>
-                    <div class="social-media">
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-google"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </form>
-                <form action="{{ url('/owner/dashboard') }}" class="sign-up-form">
-                    <h2 class="title">Sign in</h2>
-                    <div class="input-field">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" placeholder="Email" />
-                    </div>
-                    <div class="input-field">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" placeholder="Password" />
-                    </div>
-                    <input type="submit" class="btn" value="Sign in" />
-                    <p class="social-text">Or Sign in with social platforms</p>
-                    <div class="social-media">
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-google"></i>
-                        </a>
-                        <a href="#" class="social-icon">
-                            <i class="fab fa-linkedin-in"></i>
-                        </a>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
+    </main>
 
-        <div class="panels-container">
-            <div class="panel left-panel">
-                <div class="content">
-                    <h3>New here ?</h3>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
-                        ex ratione. Aliquid!
-                    </p>
-                    <button class="btn transparent" id="sign-up-btn">
-                        Sign up
-                    </button>
-                </div>
-                <img src="{{ asset('img/log.svg') }}" class="image" alt="Log Image" />
-            </div>
-            <div class="panel right-panel">
-                <div class="content">
-                    <h3>One of us ?</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-                        laboriosam ad deleniti.
-                    </p>
-                    <button class="btn transparent" id="sign-in-btn">
-                        Sign in
-                    </button>
-                </div>
-                <img src="{{ asset('img/register.svg') }}" class="image" alt="Register Image" />
-            </div>
-        </div>
-    </div>
-
-    <script src="{{ asset('js/app.js') }}"></script>
+    <!-- Javascript file -->
+    <script src="{{ asset('js/auth/app.js') }}"></script>
 </body>
 
 </html>

@@ -13,15 +13,15 @@ class OwnerProductController extends Controller
     // List all products owned by the logged-in owner
     public function index()
     {
-        $user = \Auth::user();
+        $user = Auth::user();
         if (!$user) {
-            $umkm = \App\Models\UMKMProfile::first();
+            $umkm = UMKMProfile::first();
         } else {
-            $umkm = \App\Models\UMKMProfile::where('id_users', $user->id_users)->first();
+            $umkm = UMKMProfile::where('id_users', $user->id_users)->first();
         }
-        $products = $umkm ? \App\Models\Product::with(['category', 'umkmProfile'])->where('id_umkm', $umkm->id_umkm)->get() : collect();
-        $categories = \App\Models\Category::all();
-        $umkmProfiles = \App\Models\UMKMProfile::all();
+        $products = $umkm ? Product::with(['category', 'umkmProfile'])->where('id_umkm', $umkm->id_umkm)->get() : collect();
+        $categories = Category::all();
+        $umkmProfiles = UMKMProfile::all();
         return view('owner.products.index', compact('products', 'categories', 'umkmProfiles'));
     }
 
@@ -63,7 +63,12 @@ class OwnerProductController extends Controller
     // Show form for editing a product
     public function edit($id)
     {
+        $user = Auth::user();
         $product = Product::findOrFail($id);
+        $umkm = UMKMProfile::where('id_users', $user->id_users)->first();
+        if (!$umkm || $product->id_umkm !== $umkm->id_umkm) {
+            abort(403, 'Anda tidak berhak mengakses produk ini.');
+        }
         $categories = Category::all();
         $umkmProfiles = UMKMProfile::all();
         return view('owner.products.edit', compact('product', 'categories', 'umkmProfiles'));
@@ -72,7 +77,12 @@ class OwnerProductController extends Controller
     // Update a product
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
         $product = Product::findOrFail($id);
+        $umkm = UMKMProfile::where('id_users', $user->id_users)->first();
+        if (!$umkm || $product->id_umkm !== $umkm->id_umkm) {
+            abort(403, 'Anda tidak berhak mengakses produk ini.');
+        }
         $validated = $request->validate([
             'nama_produk' => 'required|string|max:150',
             'id_kategori' => 'required|exists:categories,id_kategori',
@@ -96,7 +106,12 @@ class OwnerProductController extends Controller
     // Delete a product
     public function destroy($id)
     {
+        $user = Auth::user();
         $product = Product::findOrFail($id);
+        $umkm = UMKMProfile::where('id_users', $user->id_users)->first();
+        if (!$umkm || $product->id_umkm !== $umkm->id_umkm) {
+            abort(403, 'Anda tidak berhak mengakses produk ini.');
+        }
         $product->delete();
         return redirect()->route('owner.products.index')->with('success', 'Produk berhasil dihapus!');
     }

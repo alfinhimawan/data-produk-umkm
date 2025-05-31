@@ -97,6 +97,23 @@
 
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var alertBox = document.getElementById("auth-alert");
+            if (alertBox && window.Swal) {
+                var type = alertBox.dataset.type;
+                var message = alertBox.dataset.message;
+                if (type && message) {
+                    Swal.fire({
+                        icon: type,
+                        title: message,
+                        showConfirmButton: false,
+                        timer: 1800,
+                    });
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
