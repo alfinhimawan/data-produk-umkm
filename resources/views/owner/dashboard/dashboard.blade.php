@@ -76,23 +76,11 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Jumlah Produk per Kategori</h6>
-                </div>
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2 d-flex justify-content-center align-items-center"
-                        style="min-height:260;">
-                        <canvas id="produkPerKategoriChart" style="max-width:260;"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Top Kategori Card inserted here, chart removed -->
+        @includeWhen(isset($topCategories), 'owner.dashboard._top_kategori_card', ['topCategories' => $topCategories])
     </div>
 
     <script id="produkPerBulanData" type="application/json">@json(['labels' => $bulanLabels, 'data' => $produkData])</script>
-    <script id="produkPerKategoriData" type="application/json">@json(['labels' => $kategoriBarLabels, 'data' => $kategoriBarData])</script>
 @endsection
 
 @push('scripts')

@@ -25,6 +25,7 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('products', App\Http\Controllers\ProductController::class);
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::get('reports', [App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
+    Route::get('reports/export', [App\Http\Controllers\ReportController::class, 'export'])->name('reports.export');
     Route::resource('umkm-profiles', App\Http\Controllers\UMKMProfileController::class);
 });
 
@@ -39,7 +40,9 @@ Route::prefix('owner')->middleware(['auth', 'role:umkm_owner', 'umkmprofile.exis
         return view('owner.categories.index', compact('categories'));
     })->name('owner.categories.index');
     Route::get('umkm-profile', function () {
-        $umkm = \App\Models\UMKMProfile::with('user')->first();
+        $umkm = \App\Models\UMKMProfile::with('user')->where('id_users', auth()->id())->first();
         return view('owner.umkm-profile.index', compact('umkm'));
     })->name('owner.umkm-profile');
+    Route::post('umkm-profile', [App\Http\Controllers\OwnerUMKMProfileController::class, 'store'])->name('owner.umkm-profile.store');
+    Route::match(['put', 'patch'], 'umkm-profile/{id}', [App\Http\Controllers\OwnerUMKMProfileController::class, 'update'])->name('owner.umkm-profile.update');
 });

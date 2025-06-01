@@ -9,8 +9,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="#" method="POST" enctype="multipart/form-data" id="formEditUMKM">
+            <form
+                action="{{ isset($umkm) ? route('owner.umkm-profile.update', $umkm->id_umkm) : route('owner.umkm-profile.store') }}"
+                method="POST" enctype="multipart/form-data" id="formEditUMKM">
                 @csrf
+                @if (isset($umkm))
+                    @method('PUT')
+                @endif
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -21,7 +26,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="edit_alamat">Alamat</label>
-                                <textarea class="form-control" id="edit_alamat" name="alamat" rows="3" required placeholder="Masukkan alamat lengkap UMKM">{{ $umkm->alamat ?? '' }}</textarea>
+                                <textarea class="form-control" id="edit_alamat" name="alamat" rows="3" required
+                                    placeholder="Masukkan alamat lengkap UMKM">{{ $umkm->alamat ?? '' }}</textarea>
                             </div>
                             <div class="form-group">
                                 <label for="edit_kontak">Kontak</label>
@@ -33,9 +39,10 @@
                             <div class="form-group">
                                 <label for="edit_logo">Logo</label>
                                 <input type="file" class="form-control-file" id="edit_logo" name="logo"
-                                    accept="image/*">
+                                    accept="image/*" onchange="previewLogoUMKM(event)">
                                 <div class="mt-2">
                                     <img id="preview-img-umkm" src="{{ asset($umkm->logo ?? 'img/default-umkm.png') }}"
+                                        data-default="{{ asset($umkm->logo ?? 'img/default-umkm.png') }}"
                                         alt="Preview" class="img-thumbnail border-primary" width="90"
                                         style="object-fit:cover;">
                                 </div>

@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Grafik penambahan produk per bulan (line chart)
     const area = document.getElementById("produkPerBulanChart");
     if (area) {
         let produkDataJson = document.getElementById('produkPerBulanData');
@@ -33,9 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Grafik jumlah produk per kategori (doughnut chart)
-    const doughnut = document.getElementById("produkPerKategoriChart");
-    if (doughnut) {
+    const polar = document.getElementById("produkPerKategoriChart");
+    if (polar) {
         let kategoriBarJson = document.getElementById('produkPerKategoriData');
         let barData = { labels: [], data: [] };
         if (kategoriBarJson) {
@@ -46,8 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const colors = [
             "#36b9cc", "#1cc88a", "#e74a3b", "#f6c23e", "#858796", "#4e73df", "#fd7e14", "#20c997", "#6f42c1", "#e83e8c"
         ];
-        new Chart(doughnut.getContext("2d"), {
-            type: "doughnut",
+        new Chart(polar.getContext("2d"), {
+            type: "polarArea",
             data: {
                 labels: barData.labels.length ? barData.labels : ["Kategori 1", "Kategori 2", "Kategori 3"],
                 datasets: [
@@ -61,7 +59,10 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             options: {
                 responsive: true,
-                plugins: { legend: { position: "bottom" } },
+                plugins: {
+                    legend: { position: 'right' },
+                    title: { display: true, text: 'Jumlah Produk per Kategori' }
+                }
             },
         });
     }

@@ -35,16 +35,19 @@ class OwnerDashboardController extends Controller
             $produkData[] = $produkPerBulan[$b] ?? 0;
         }
 
-        // Grafik jumlah produk per kategori (bar chart)
         $kategoriBar = $umkm ? Category::withCount(['products' => function($q) use ($umkm) {
             $q->where('id_umkm', $umkm->id_umkm);
-        }])->get() : collect();
+        }])->orderByDesc('products_count')->get() : collect();
         $kategoriBarLabels = $kategoriBar->pluck('nama_kategori')->toArray();
         $kategoriBarData = $kategoriBar->pluck('products_count')->toArray();
 
+        $topN = 3;
+        $topCategories = $kategoriBar->take($topN);
+
         return view('owner.dashboard.dashboard', compact(
             'jumlahProduk', 'namaUMKM', 'kontakUMKM',
-            'bulanLabels', 'produkData', 'kategoriBarLabels', 'kategoriBarData'
+            'bulanLabels', 'produkData', 'kategoriBarLabels', 'kategoriBarData',
+            'topCategories'
         ));
     }
 }

@@ -43,7 +43,7 @@
                                         <span class="input-group-text"><i class="fas fa-image"></i></span>
                                     </div>
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="foto" name="foto" accept="image/*">
+                                        <input type="file" class="custom-file-input" id="foto" name="foto" accept="image/*" onchange="previewFotoProduk(event)">
                                         <label class="custom-file-label" for="foto">Pilih foto...</label>
                                     </div>
                                 </div>

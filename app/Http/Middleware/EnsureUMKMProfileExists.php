@@ -14,7 +14,8 @@ class EnsureUMKMProfileExists
         $user = Auth::user();
         if ($user && $user->role === 'umkm_owner') {
             $hasProfile = UMKMProfile::where('id_users', $user->id_users)->exists();
-            if (!$hasProfile && !$request->routeIs('owner.umkm-profile')) {
+            // Allow access to only their own profile page
+            if (!$hasProfile && !$request->routeIs('owner.umkm-profile') && !$request->is('owner/umkm-profile')) {
                 return redirect()->route('owner.umkm-profile')->with('warning', 'Silakan lengkapi profil UMKM Anda terlebih dahulu.');
             }
         }

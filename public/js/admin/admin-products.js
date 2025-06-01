@@ -7,6 +7,18 @@ $(document).ready(function () {
         $('.custom-file-label[for="foto"]').text("Pilih foto...");
     });
 
+    window.previewFotoProduk = function (event) {
+        const [file] = event.target.files;
+        if (file) {
+            document.getElementById("preview-img-produk").src =
+                URL.createObjectURL(file);
+            const label = document.querySelector(
+                'label[for="foto"].custom-file-label'
+            );
+            if (label) label.textContent = file.name;
+        }
+    };
+
     $(".btn-edit-produk").on("click", function () {
         var row = $(this).closest("tr");
         var id = $(this).data("id");
@@ -24,6 +36,18 @@ $(document).ready(function () {
         $("#edit_deskripsi").val(deskripsi);
         $("#formEditProduk").attr("action", "/admin/products/" + id);
     });
+
+    window.previewEditFotoProduk = function (event) {
+        const [file] = event.target.files;
+        if (file) {
+            document.getElementById("preview-img-edit-produk").src =
+                URL.createObjectURL(file);
+            const label = document.querySelector(
+                'label[for="edit_foto"].custom-file-label'
+            );
+            if (label) label.textContent = file.name;
+        }
+    };
 
     $(".btn-hapus-produk").on("click", function (e) {
         e.preventDefault();
@@ -47,27 +71,3 @@ $(document).ready(function () {
         $(".alert").alert("close");
     }, 3500);
 });
-
-window.previewFotoProduk = function (event) {
-    const [file] = event.target.files;
-    if (file) {
-        document.getElementById("preview-img-produk").src =
-            URL.createObjectURL(file);
-        const label = document.querySelector(
-            'label[for="foto"].custom-file-label'
-        );
-        if (label) label.textContent = file.name;
-    }
-};
-
-window.previewEditFotoProduk = function (event) {
-    const [file] = event.target.files;
-    if (file) {
-        document.getElementById("preview-img-edit-produk").src =
-            URL.createObjectURL(file);
-        const label = document.querySelector(
-            'label[for="edit_foto"].custom-file-label'
-        );
-        if (label) label.textContent = file.name;
-    }
-};

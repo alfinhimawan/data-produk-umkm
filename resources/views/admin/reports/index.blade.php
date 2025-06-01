@@ -33,7 +33,7 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary"><i class="fas fa-filter mr-1"></i> Filter</button>
-            <button type="button" class="btn btn-success ml-2"><i class="fas fa-file-excel mr-1"></i> Export Excel</button>
+            <button type="button" class="btn btn-success ml-2" id="btn-export-excel"><i class="fas fa-file-excel mr-1"></i> Export Excel</button>
         </form>
         <div class="table-responsive">
             <table class="table table-bordered" width="100%" cellspacing="0">
@@ -83,6 +83,11 @@
 <script>
     $(document).ready(function() {
         $('.table').DataTable();
+    });
+
+    document.getElementById('btn-export-excel')?.addEventListener('click', function() {
+        const params = new URLSearchParams(window.location.search);
+        window.location.href = "{{ route('reports.export') }}" + (params.toString() ? ('?' + params.toString()) : '');
     });
 </script>
 @endpush
