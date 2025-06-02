@@ -41,10 +41,9 @@
                                 <input type="file" class="form-control-file" id="edit_logo" name="logo"
                                     accept="image/*" onchange="previewLogoUMKM(event)">
                                 <div class="mt-2">
-                                    <img id="preview-img-umkm" src="{{ asset($umkm->logo ?? 'img/default-umkm.png') }}"
-                                        data-default="{{ asset($umkm->logo ?? 'img/default-umkm.png') }}"
-                                        alt="Preview" class="img-thumbnail border-primary" width="90"
-                                        style="object-fit:cover;">
+                                    <img id="preview-img-umkm" src="{{ asset($umkm->logo ?? 'img/default-umkm.png') }}?t={{ now()->timestamp }}"
+    data-default="{{ asset($umkm->logo ?? 'img/default-umkm.png') }}?t={{ now()->timestamp }}"
+    alt="Preview" class="img-thumbnail border-primary" width="90" style="object-fit:cover;">
                                 </div>
                                 <small class="form-text text-muted">Format: JPG, PNG. Maks 2MB.</small>
                             </div>

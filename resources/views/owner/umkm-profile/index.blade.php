@@ -22,7 +22,8 @@
                         @else
                             <div class="text-center mb-4">
                                 <span class="glass-avatar-umkm mb-2">
-                                    <img src="{{ asset($umkm->logo ?? 'img/default-umkm.png') }}" alt="Logo UMKM"
+                                    <img src="{{ $umkm && $umkm->logo && file_exists(public_path($umkm->logo)) ? asset($umkm->logo) . '?t=' . now()->timestamp : asset('img/default-umkm.png') }}"
+                                        alt="Logo UMKM"
                                         class="rounded-circle border border-primary"
                                         style="width:110px; height:110px; object-fit:cover; background:#f8f9fa;">
                                 </span>
@@ -98,6 +99,10 @@
 
     @if (session('warning'))
         <div id="auth-alert" data-type="warning" data-message="{{ session('warning') }}" style="display:none;"></div>
+    @endif
+
+    @if (session('error'))
+        <div id="auth-alert" data-type="error" data-message="{{ session('error') }}" style="display:none;"></div>
     @endif
 @endsection
 

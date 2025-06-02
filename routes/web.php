@@ -26,7 +26,8 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', App\Http\Controllers\UserController::class);
     Route::get('reports', [App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
     Route::get('reports/export', [App\Http\Controllers\ReportController::class, 'export'])->name('reports.export');
-    Route::resource('umkm-profiles', App\Http\Controllers\UMKMProfileController::class);
+    Route::resource('umkm-profiles', App\Http\Controllers\UMKMProfileController::class)->except(['create', 'store', 'edit', 'update']);
+    Route::patch('umkm-profiles/{id}/status/{status}', [App\Http\Controllers\UMKMProfileController::class, 'setStatus'])->name('umkm-profiles.setStatus');
 });
 
 // Owner routes

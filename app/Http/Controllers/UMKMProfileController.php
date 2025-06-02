@@ -20,33 +20,15 @@ class UMKMProfileController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        $users = User::all();
-        return view('admin.umkm_profiles.create', compact('users'));
+    public function create() {
+        return redirect()->route('umkm-profiles.index')->with('error', 'Admin tidak diizinkan menambah UMKM!');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'id_users' => 'required|exists:users,id_users',
-            'nama_umkm' => 'required|string|max:150',
-            'alamat' => 'required|string',
-            'kontak' => 'required|string|max:50',
-            'status' => 'required|in:aktif,nonaktif',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-        if ($request->hasFile('logo')) {
-            $logo = $request->file('logo');
-            $namaFile = time() . '_' . $logo->getClientOriginalName();
-            $logo->move(public_path('image/logo'), $namaFile);
-            $validated['logo'] = 'image/logo/' . $namaFile;
-        }
-        UMKMProfile::create($validated);
-        return redirect()->route('umkm-profiles.index')->with('success', 'UMKM Profile berhasil ditambahkan.');
+    public function store(Request $request) {
+        return redirect()->route('umkm-profiles.index')->with('error', 'Admin tidak diizinkan menambah UMKM!');
     }
 
     /**
@@ -61,38 +43,15 @@ class UMKMProfileController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
-    {
-        $umkmProfile = UMKMProfile::findOrFail($id);
-        $users = User::all();
-        return view('admin.umkm_profiles.edit', compact('umkmProfile', 'users'));
+    public function edit($id) {
+        return redirect()->route('umkm-profiles.index')->with('error', 'Admin tidak diizinkan mengedit UMKM!');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
-    {
-        $umkmProfile = UMKMProfile::findOrFail($id);
-        $validated = $request->validate([
-            'id_users' => 'required|exists:users,id_users',
-            'nama_umkm' => 'required|string|max:150',
-            'alamat' => 'required|string',
-            'kontak' => 'required|string|max:50',
-            'status' => 'required|in:aktif,nonaktif',
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
-        if ($request->hasFile('logo')) {
-            if ($umkmProfile->logo && file_exists(public_path($umkmProfile->logo))) {
-                unlink(public_path($umkmProfile->logo));
-            }
-            $logo = $request->file('logo');
-            $namaFile = time() . '_' . $logo->getClientOriginalName();
-            $logo->move(public_path('image/logo'), $namaFile);
-            $validated['logo'] = 'image/logo/' . $namaFile;
-        }
-        $umkmProfile->update($validated);
-        return redirect()->route('umkm-profiles.index')->with('success', 'UMKM Profile berhasil diupdate.');
+    public function update(Request $request, $id) {
+        return redirect()->route('umkm-profiles.index')->with('error', 'Admin tidak diizinkan mengedit UMKM!');
     }
 
     /**
@@ -103,5 +62,14 @@ class UMKMProfileController extends Controller
         $umkmProfile = UMKMProfile::findOrFail($id);
         $umkmProfile->delete();
         return redirect()->route('umkm-profiles.index')->with('success', 'UMKM Profile berhasil dihapus.');
+    }
+
+    // Tambahkan method untuk nonaktifkan UMKM
+    public function setStatus($id, $status)
+    {
+        $umkmProfile = UMKMProfile::findOrFail($id);
+        $umkmProfile->status = $status;
+        $umkmProfile->save();
+        return redirect()->route('umkm-profiles.index')->with('success', 'Status UMKM berhasil diubah.');
     }
 }

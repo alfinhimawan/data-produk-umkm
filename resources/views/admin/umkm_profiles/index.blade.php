@@ -94,22 +94,16 @@
                                             title="Hapus"><i class="fas fa-trash"></i></button>
                                     </form>
                                     @if ($umkm->status === 'aktif')
-                                        <form action="{{ route('umkm-profiles.update', $umkm->id_umkm) }}" method="POST"
-                                            style="display:inline-block;">
+                                        <form action="{{ route('umkm-profiles.setStatus', ['id' => $umkm->id_umkm, 'status' => 'nonaktif']) }}" method="POST" style="display:inline-block;">
                                             @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="status" value="nonaktif">
-                                            <button type="submit" class="btn btn-warning btn-sm" title="Nonaktifkan"><i
-                                                    class="fas fa-user-slash"></i></button>
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-warning btn-sm" title="Nonaktifkan"><i class="fas fa-user-slash"></i></button>
                                         </form>
                                     @else
-                                        <form action="{{ route('umkm-profiles.update', $umkm->id_umkm) }}" method="POST"
-                                            style="display:inline-block;">
+                                        <form action="{{ route('umkm-profiles.setStatus', ['id' => $umkm->id_umkm, 'status' => 'aktif']) }}" method="POST" style="display:inline-block;">
                                             @csrf
-                                            @method('PUT')
-                                            <input type="hidden" name="status" value="aktif">
-                                            <button type="submit" class="btn btn-success btn-sm" title="Aktifkan"><i
-                                                    class="fas fa-user-check"></i></button>
+                                            @method('PATCH')
+                                            <button type="submit" class="btn btn-success btn-sm" title="Aktifkan"><i class="fas fa-user-check"></i></button>
                                         </form>
                                     @endif
                                 </td>

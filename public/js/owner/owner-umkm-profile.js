@@ -11,6 +11,22 @@ $(document).ready(function () {
         $(this).find(".is-invalid").removeClass("is-invalid");
         $(this).find(".invalid-feedback").remove();
     });
+
+    // SweetAlert untuk error, success, warning
+    const alertDiv = document.getElementById('auth-alert');
+    if (alertDiv) {
+        const type = alertDiv.getAttribute('data-type');
+        const message = alertDiv.getAttribute('data-message');
+        if (type && message) {
+            Swal.fire({
+                icon: type,
+                title: type === 'success' ? 'Berhasil!' : (type === 'warning' ? 'Peringatan!' : 'Gagal!'),
+                text: message,
+                timer: 2500,
+                showConfirmButton: false
+            });
+        }
+    }
 });
 
 window.previewLogoUMKM = function (event) {

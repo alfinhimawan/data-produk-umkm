@@ -60,4 +60,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(UMKMProfile::class, 'id_users', 'id_users');
     }
+    public function umkmProfile()
+    {
+        return $this->hasOne(UMKMProfile::class, 'id_users', 'id_users');
+    }
 }
