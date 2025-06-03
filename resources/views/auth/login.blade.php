@@ -73,9 +73,9 @@
                             <input type="submit" value="Sign In" class="sign-btn" />
 
                             <div class="Or-Sign-Up-Using">
-                                <span class="or-text">Or Sign In Using</span>
+                                <span class="or-text">Owner Sign In Using</span>
                                 <div class="login-social-icons">
-                                    <a href="#" class="social-icon google"><img
+                                    <a href="{{ route('google.login') }}" class="social-icon google"><img
                                             src="{{ asset('img/social/google.svg') }}" alt="Google" /></a>
                                     <a href="#" class="social-icon facebook"><img
                                             src="{{ asset('img/social/facebook.svg') }}" alt="Facebook" /></a>

@@ -68,6 +68,9 @@ class UserController extends Controller
     public function edit($id_users)
     {
         $user = User::findOrFail($id_users);
+        if (auth()->user()->role === 'admin' && auth()->user()->id_users != $user->id_users) {
+            return redirect()->route('users.index')->with('error', 'Anda hanya bisa mengedit akun Anda sendiri.');
+        }
         return view('users.edit', compact('user'));
     }
 
@@ -77,18 +80,17 @@ class UserController extends Controller
     public function update(Request $request, $id_users)
     {
         $user = User::findOrFail($id_users);
-        if ($request->has('status') && !$request->has('name') && !$request->has('email') && !$request->has('role')) {
-            $user->update(['status' => $request->status]);
-            return redirect()->route('users.index')->with('success', 'Status user berhasil diubah.');
+        if (auth()->user()->role === 'admin' && auth()->user()->id_users != $user->id_users) {
+            return redirect()->route('users.index')->with('error', 'Anda hanya bisa mengedit akun Anda sendiri.');
         }
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:150|unique:users,email,' . $user->id_users . ',id_users',
             'password' => 'nullable|string|min:6',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'role' => 'required|in:admin,umkm_owner',
-            'status' => 'nullable|in:aktif,nonaktif',
         ]);
+        $validated['role'] = $user->role;
+        $validated['status'] = $user->status;
         if ($request->hasFile('foto')) {
             if ($user->foto && file_exists(public_path($user->foto))) {
                 unlink(public_path($user->foto));

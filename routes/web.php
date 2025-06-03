@@ -13,10 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Authentication
+// Authentication untuk Admin
 Route::get('/', [App\Http\Controllers\AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login'])->name('login.attempt');
 Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+
+// Google Auth untuk Owner
+use App\Http\Controllers\GoogleController;
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+Route::post('/logout', [GoogleController::class, 'logout'])->name('logout');
 
 // Admin routes
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {

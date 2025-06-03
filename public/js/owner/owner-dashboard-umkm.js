@@ -66,4 +66,14 @@ document.addEventListener("DOMContentLoaded", function () {
             },
         });
     }
+
+    // SweetAlert untuk pesan sukses login
+    if (window.dashboardSuccessMessage) {
+        Swal.fire({
+            icon: 'success',
+            title: window.dashboardSuccessMessage,
+            showConfirmButton: false,
+            timer: 1800,
+        });
+    }
 });
