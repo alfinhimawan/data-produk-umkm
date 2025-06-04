@@ -50,7 +50,7 @@
                                 <div class="mt-2">
                                     <img id="preview-img-produk" src="{{ asset('img/default-produk.png') }}" alt="Preview" class="img-thumbnail border-primary" width="80" style="object-fit:cover;">
                                 </div>
-                                <small class="form-text text-muted">Format: JPG, PNG. Maks 2MB.</small>
+                                <small class="form-text text-muted">Format: JPG, JPEG, PNG. Maks 2MB.</small>
                             </div>
                             <div class="form-group">
                                 <label for="deskripsi">Deskripsi</label>

@@ -77,7 +77,7 @@
                                 <div class="mt-2">
                                     <img id="edit-preview-img" src="{{ asset('img/default-user.png') }}" alt="Preview" class="img-thumbnail border-info" width="80" style="object-fit:cover;">
                                 </div>
-                                <small class="form-text text-muted">Format: JPG, PNG. Maks 2MB.</small>
+                                <small class="form-text text-muted">Format: JPG, JPEG, PNG. Maks 2MB.</small>
                             </div>
                         </div>
                     </div>

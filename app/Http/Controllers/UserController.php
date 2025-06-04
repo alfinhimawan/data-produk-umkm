@@ -68,9 +68,7 @@ class UserController extends Controller
     public function edit($id_users)
     {
         $user = User::findOrFail($id_users);
-        if (auth()->user()->role === 'admin' && auth()->user()->id_users != $user->id_users) {
-            return redirect()->route('users.index')->with('error', 'Anda hanya bisa mengedit akun Anda sendiri.');
-        }
+        // Hapus pembatasan: admin bisa edit akun owner manapun
         return view('users.edit', compact('user'));
     }
 
@@ -80,8 +78,9 @@ class UserController extends Controller
     public function update(Request $request, $id_users)
     {
         $user = User::findOrFail($id_users);
-        if (auth()->user()->role === 'admin' && auth()->user()->id_users != $user->id_users) {
-            return redirect()->route('users.index')->with('error', 'Anda hanya bisa mengedit akun Anda sendiri.');
+        if ($request->has('status') && !$request->has('name') && !$request->has('email')) {
+            $user->update(['status' => $request->status]);
+            return redirect()->route('users.index')->with('success', 'Status user berhasil diubah.');
         }
         $validated = $request->validate([
             'name' => 'required|string|max:100',

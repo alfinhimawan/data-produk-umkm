@@ -45,7 +45,7 @@
     data-default="{{ asset($umkm->logo ?? 'img/default-umkm.png') }}?t={{ now()->timestamp }}"
     alt="Preview" class="img-thumbnail border-primary" width="90" style="object-fit:cover;">
                                 </div>
-                                <small class="form-text text-muted">Format: JPG, PNG. Maks 2MB.</small>
+                                <small class="form-text text-muted">Format: JPG, JPEG, PNG. Maks 2MB.</small>
                             </div>
                         </div>
                     </div>

@@ -102,10 +102,10 @@ $(document).ready(function () {
         btn.addEventListener("click", function () {
             const user = JSON.parse(this.getAttribute("data-user"));
             document.getElementById("edit_user_id").value = user.id_users;
-            document.getElementById("edit_nama").value = user.name;
-            document.getElementById("edit_email").value = user.email;
-            document.getElementById("edit_role").value = user.role;
-            document.getElementById("edit_status").value = user.status;
+            document.getElementById("edit_nama").value = user.name || '';
+            document.getElementById("edit_email").value = user.email || '';
+            document.getElementById("edit_role").value = user.role || '';
+            document.getElementById("edit_status").value = user.status || '';
             document.getElementById("edit-preview-img").src = user.foto
                 ? "/" + user.foto
                 : "/img/default-user.png";
