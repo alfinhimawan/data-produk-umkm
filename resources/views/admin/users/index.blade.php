@@ -85,6 +85,8 @@
                                 <td>
                                     @if ($user->status === 'aktif')
                                         <span class="badge badge-success">Aktif</span>
+                                    @elseif ($user->status === 'pending')
+                                        <span class="badge badge-warning">Pending</span>
                                     @else
                                         <span class="badge badge-danger">Nonaktif</span>
                                     @endif

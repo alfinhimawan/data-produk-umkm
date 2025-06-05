@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('foto', 255)->nullable();
             $table->enum('role', ['admin', 'umkm_owner']);
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+            $table->enum('status', ['aktif', 'nonaktif', 'pending'])->default('pending');
+            $table->string('verification_token', 100)->nullable();
             $table->timestamps();
         });
     }

@@ -49,6 +49,9 @@
                             <div id="auth-alert" data-type="error" data-message="{{ session('error') }}"
                                 style="display:none;"></div>
                         @endif
+                        @if (session('info'))
+                            <div id="auth-alert" data-type="info" data-message="{{ session('info') }}" style="display:none;"></div>
+                        @endif
 
                         <div class="actual-form">
                             <div class="input-wrap">

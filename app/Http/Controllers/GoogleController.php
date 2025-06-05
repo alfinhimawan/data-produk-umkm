@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OwnerGoogleVerificationMail;
 use Illuminate\Http\Request;
 
 class GoogleController extends Controller
@@ -33,9 +35,11 @@ class GoogleController extends Controller
                 'email' => $googleUser->getEmail(),
                 'password' => '',
                 'role' => 'umkm_owner',
-                'status' => 'aktif',
+                'status' => 'pending',
                 'foto' => $googleUser->getAvatar(),
+                'verification_token' => Str::random(64),
             ]);
+            Mail::to($user->email)->send(new OwnerGoogleVerificationMail($user));
         } else {
             if ($googleUser->getAvatar()) {
                 $user->foto = $googleUser->getAvatar();
@@ -45,6 +49,10 @@ class GoogleController extends Controller
 
         if ($user && $user->status === 'nonaktif') {
             return redirect()->route('login')->with('error', 'Akun Anda nonaktif. Silakan hubungi admin.');
+        }
+
+        if ($user && $user->status === 'pending') {
+            return redirect()->route('login')->with('info', 'Akun Anda berhasil dibuat. Silakan cek email Anda untuk verifikasi sebelum login.');
         }
 
         Auth::login($user);
@@ -62,5 +70,17 @@ class GoogleController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    public function verifyEmail($token)
+    {
+        $user = \App\Models\User::where('verification_token', $token)->first();
+        if ($user) {
+            $user->status = 'aktif';
+            $user->verification_token = null;
+            $user->save();
+            return redirect()->route('login')->with('success', 'Email berhasil diverifikasi, silakan login.');
+        }
+        return redirect()->route('login')->with('error', 'Token verifikasi tidak valid.');
     }
 }

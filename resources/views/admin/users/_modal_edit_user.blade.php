@@ -21,7 +21,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                                     </div>
-                                    <input type="text" class="form-control" id="edit_nama" name="name" placeholder="Nama User" required>
+                                    <input type="text" class="form-control" id="edit_nama" name="name" placeholder="Nama User" required readonly>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -30,7 +30,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                     </div>
-                                    <input type="email" class="form-control" id="edit_email" name="email" placeholder="Email" required>
+                                    <input type="email" class="form-control" id="edit_email" name="email" placeholder="Email" required readonly>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -51,7 +51,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="edit_role">Role</label>
-                                <select class="form-control" id="edit_role" name="role" onchange="toggleEditStatusDropdown()" required>
+                                <select class="form-control" id="edit_role" name="role" required readonly>
                                     <option value="admin">Admin</option>
                                     <option value="umkm_owner">UMKM Owner</option>
                                 </select>
@@ -61,6 +61,7 @@
                                 <select class="form-control" id="edit_status" name="status">
                                     <option value="aktif">Aktif</option>
                                     <option value="nonaktif">Nonaktif</option>
+                                    <option value="pending">Pending</option>
                                 </select>
                             </div>
                             <div class="form-group">

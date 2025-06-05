@@ -49,18 +49,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="role">Role</label>
-                                <select class="form-control" id="role" name="role" onchange="toggleStatusDropdown()" required>
-                                    <option value="" selected disabled>Pilih Role</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="umkm_owner">UMKM Owner</option>
+                                <select class="form-control" id="role" name="role" required readonly disabled>
+                                    <option value="admin" selected>Admin</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="status">Status</label>
                                 <select class="form-control" id="status" name="status" disabled>
-                                    <option value="" selected disabled>Pilih Status</option>
-                                    <option value="aktif">Aktif</option>
-                                    <option value="nonaktif">Nonaktif</option>
+                                    <option value="aktif" selected>Aktif</option>
                                 </select>
                             </div>
                             <div class="form-group">

@@ -105,19 +105,26 @@ $(document).ready(function () {
             document.getElementById("edit_nama").value = user.name || '';
             document.getElementById("edit_email").value = user.email || '';
             document.getElementById("edit_role").value = user.role || '';
-            document.getElementById("edit_status").value = user.status || '';
+            const statusSelect = document.getElementById("edit_status");
+            statusSelect.value = user.status || '';
+            if (statusSelect.value !== (user.status || '')) {
+                for (let i = 0; i < statusSelect.options.length; i++) {
+                    if (statusSelect.options[i].value.toLowerCase() === (user.status || '').toLowerCase()) {
+                        statusSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            statusSelect.disabled = true;
             document.getElementById("edit-preview-img").src = user.foto
                 ? "/" + user.foto
                 : "/img/default-user.png";
             document.getElementById("formEditUser").action =
                 "/admin/users/" + user.id_users;
-            if (user.role === "admin") {
-                document.getElementById("edit_role").disabled = true;
-                document.getElementById("edit_status").value = "aktif";
-                document.getElementById("edit_status").disabled = true;
-            } else {
+            if (user.role === "admin" && user.id_users === CURRENT_ADMIN_ID) {
                 document.getElementById("edit_role").disabled = false;
-                document.getElementById("edit_status").disabled = false;
+            } else {
+                document.getElementById("edit_role").disabled = true;
             }
         });
     });

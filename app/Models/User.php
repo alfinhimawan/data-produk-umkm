@@ -27,6 +27,7 @@ class User extends Authenticatable
         'foto',
         'role',
         'status',
+        'verification_token',
     ];
 
     /**

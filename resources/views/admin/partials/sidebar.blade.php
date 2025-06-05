@@ -20,7 +20,7 @@
     <li class="nav-item {{ request()->is('admin/users*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('users.index') }}">
             <i class="fas fa-users"></i>
-            <span>Data User UMKM</span>
+            <span>Data User</span>
         </a>
     </li>
     <!-- Kategori Produk -->
@@ -51,6 +51,15 @@
         <a class="nav-link" href="{{ url('admin/reports') }}">
             <i class="fas fa-chart-bar"></i>
             <span>Laporan Produk</span>
+        </a>
+    </li>
+    <hr class="sidebar-divider">
+    <div class="sidebar-heading">Sistem</div>
+    <!-- Audit Log -->
+    <li class="nav-item {{ request()->is('admin/audit-logs*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.audit-logs.index') }}">
+            <i class="fas fa-history"></i>
+            <span>Audit Log</span>
         </a>
     </li>
     <hr class="sidebar-divider d-none d-md-block">
