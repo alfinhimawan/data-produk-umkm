@@ -53,15 +53,6 @@
             <span>Laporan Produk</span>
         </a>
     </li>
-    <hr class="sidebar-divider">
-    <div class="sidebar-heading">Sistem</div>
-    <!-- Audit Log -->
-    <li class="nav-item {{ request()->is('admin/audit-logs*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('admin.audit-logs.index') }}">
-            <i class="fas fa-history"></i>
-            <span>Audit Log</span>
-        </a>
-    </li>
     <hr class="sidebar-divider d-none d-md-block">
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

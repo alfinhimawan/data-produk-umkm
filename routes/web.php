@@ -9,7 +9,6 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UMKMProfileController;
-use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\OwnerDashboardController;
 use App\Http\Controllers\OwnerProductController;
 use App\Http\Controllers\OwnerUMKMProfileController;
@@ -45,7 +44,6 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('reports/export', [ReportController::class, 'export'])->name('reports.export');
     Route::resource('umkm-profiles', UMKMProfileController::class)->except(['create', 'store', 'edit', 'update']);
     Route::patch('umkm-profiles/{id}/status/{status}', [UMKMProfileController::class, 'setStatus'])->name('umkm-profiles.setStatus');
-    Route::get('audit-logs', [AuditLogController::class, 'index'])->name('admin.audit-logs.index');
 });
 
 // ------------------- OWNER -------------------

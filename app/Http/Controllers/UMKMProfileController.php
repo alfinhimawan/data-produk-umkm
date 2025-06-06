@@ -60,7 +60,17 @@ class UMKMProfileController extends Controller
     public function destroy($id)
     {
         $umkmProfile = UMKMProfile::findOrFail($id);
+        $before = $umkmProfile->toArray();
         $umkmProfile->delete();
+        // Audit log untuk hapus UMKM oleh admin
+        \App\Models\AuditLog::create([
+            'id_users' => auth()->id(),
+            'action' => 'delete_umkm_profile',
+            'target_table' => 'umkm_profiles',
+            'target_id' => $id,
+            'before' => json_encode($before),
+            'after' => null,
+        ]);
         return redirect()->route('umkm-profiles.index')->with('success', 'UMKM Profile berhasil dihapus.');
     }
 
@@ -68,8 +78,18 @@ class UMKMProfileController extends Controller
     public function setStatus($id, $status)
     {
         $umkmProfile = UMKMProfile::findOrFail($id);
+        $before = $umkmProfile->toArray();
         $umkmProfile->status = $status;
         $umkmProfile->save();
+        // Audit log untuk update status UMKM oleh admin
+        \App\Models\AuditLog::create([
+            'id_users' => auth()->id(),
+            'action' => 'update_status_umkm_profile',
+            'target_table' => 'umkm_profiles',
+            'target_id' => $id,
+            'before' => json_encode($before),
+            'after' => json_encode($umkmProfile->toArray()),
+        ]);
         return redirect()->route('umkm-profiles.index')->with('success', 'Status UMKM berhasil diubah.');
     }
 }

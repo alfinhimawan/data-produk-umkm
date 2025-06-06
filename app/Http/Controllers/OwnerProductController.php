@@ -99,7 +99,16 @@ class OwnerProductController extends Controller
             $foto->move(public_path('image/products'), $namaFile);
             $validated['foto'] = 'image/products/' . $namaFile;
         }
+        $before = $product->toArray();
         $product->update($validated);
+        \App\Models\AuditLog::create([
+            'id_users' => $user->id_users,
+            'action' => 'update_product',
+            'target_table' => 'products',
+            'target_id' => $product->id_produk,
+            'before' => json_encode($before),
+            'after' => json_encode($product->toArray()),
+        ]);
         return redirect()->route('owner.products.index')->with('success', 'Produk berhasil diupdate!');
     }
 

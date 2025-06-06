@@ -65,10 +65,20 @@ class OwnerUMKMProfileController extends Controller
                 $umkm->logo = 'image/logo/' . $namaFile;
                 Log::debug('Logo baru diupload', ['path' => $umkm->logo]);
             }
+            $before = $umkm->toArray();
             if (isset($validated['nama_umkm'])) $umkm->nama_umkm = $validated['nama_umkm'];
             if (isset($validated['alamat'])) $umkm->alamat = $validated['alamat'];
             if (isset($validated['kontak'])) $umkm->kontak = $validated['kontak'];
             $umkm->save();
+            // Audit log untuk update UMKM oleh owner
+            \App\Models\AuditLog::create([
+                'id_users' => auth()->id(),
+                'action' => 'update_umkm_profile',
+                'target_table' => 'umkm_profiles',
+                'target_id' => $umkm->id_umkm,
+                'before' => json_encode($before),
+                'after' => json_encode($umkm->toArray()),
+            ]);
             Log::debug('UMKM berhasil diupdate', $umkm->toArray());
             return redirect()->route('owner.umkm-profile')->with('success', 'Profil UMKM berhasil diupdate!');
         } catch (\Exception $e) {

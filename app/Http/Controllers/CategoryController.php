@@ -60,10 +60,20 @@ class CategoryController extends Controller
     public function update(Request $request, $id_kategori)
     {
         $category = Category::findOrFail($id_kategori);
+        $before = $category->toArray();
         $validated = $request->validate([
             'nama_kategori' => 'required|string|max:100',
         ]);
         $category->update($validated);
+        // Audit log untuk update kategori
+        \App\Models\AuditLog::create([
+            'id_users' => auth()->id(),
+            'action' => 'update_category',
+            'target_table' => 'categories',
+            'target_id' => $category->id_kategori,
+            'before' => json_encode($before),
+            'after' => json_encode($category->toArray()),
+        ]);
         return redirect()->route('categories.index')->with('success', 'Kategori berhasil diupdate.');
     }
 
@@ -73,7 +83,17 @@ class CategoryController extends Controller
     public function destroy($id_kategori)
     {
         $category = Category::findOrFail($id_kategori);
+        $before = $category->toArray();
         $category->delete();
+        // Audit log untuk hapus kategori
+        \App\Models\AuditLog::create([
+            'id_users' => auth()->id(),
+            'action' => 'delete_category',
+            'target_table' => 'categories',
+            'target_id' => $id_kategori,
+            'before' => json_encode($before),
+            'after' => null,
+        ]);
         return redirect()->route('categories.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }
