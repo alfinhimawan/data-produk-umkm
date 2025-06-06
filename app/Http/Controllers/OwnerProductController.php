@@ -46,6 +46,7 @@ class OwnerProductController extends Controller
             'nama_produk' => 'required|string|max:150',
             'id_kategori' => 'required|exists:categories,id_kategori',
             'harga' => 'required|numeric',
+            'stock' => 'required|integer|min:0',
             'deskripsi' => 'required|string',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
@@ -87,6 +88,7 @@ class OwnerProductController extends Controller
             'nama_produk' => 'required|string|max:150',
             'id_kategori' => 'required|exists:categories,id_kategori',
             'harga' => 'required|numeric',
+            'stock' => 'required|integer|min:0',
             'deskripsi' => 'required|string',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);

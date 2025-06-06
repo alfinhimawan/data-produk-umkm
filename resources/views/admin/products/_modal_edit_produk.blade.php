@@ -66,6 +66,10 @@
                                 <label for="edit_deskripsi">Deskripsi</label>
                                 <textarea class="form-control" id="edit_deskripsi" name="deskripsi" rows="3" required></textarea>
                             </div>
+                            <div class="form-group">
+                                <label for="edit_stock">Stock</label>
+                                <input type="number" class="form-control" id="edit_stock" name="stock" min="0" required>
+                            </div>
                         </div>
                     </div>
                 </div>

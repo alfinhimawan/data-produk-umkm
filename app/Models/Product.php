@@ -18,6 +18,7 @@ class Product extends Model
         'id_kategori',
         'nama_produk',
         'harga',
+        'stock',
         'deskripsi',
         'foto',
         'created_at',

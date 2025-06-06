@@ -16,18 +16,18 @@
     </li>
     <hr class="sidebar-divider">
     <div class="sidebar-heading">Manajemen Produk</div>
-    <!-- Produk Saya (CRUD produk sendiri) -->
-    <li class="nav-item {{ request()->is('owner/products*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ url('owner/products') }}">
-            <i class="fas fa-box"></i>
-            <span>Produk Saya</span>
-        </a>
-    </li>
     <!-- Kategori (lihat saja) -->
     <li class="nav-item {{ request()->is('owner/categories*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ url('owner/categories') }}">
             <i class="fas fa-tags"></i>
             <span>Kategori Produk</span>
+        </a>
+    </li>
+    <!-- Produk Saya (CRUD produk sendiri) -->
+    <li class="nav-item {{ request()->is('owner/products*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ url('owner/products') }}">
+            <i class="fas fa-box"></i>
+            <span>Produk Saya</span>
         </a>
     </li>
     <hr class="sidebar-divider">

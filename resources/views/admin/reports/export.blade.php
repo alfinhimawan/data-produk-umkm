@@ -6,6 +6,7 @@
             <th>Kategori</th>
             <th>UMKM</th>
             <th>Harga</th>
+            <th>Stock</th>
             <th>Status UMKM</th>
         </tr>
     </thead>
@@ -17,6 +18,7 @@
                 <td>{{ $product->category->nama_kategori ?? '-' }}</td>
                 <td>{{ $product->umkmProfile->nama_umkm ?? '-' }}</td>
                 <td>{{ $product->harga }}</td>
+                <td>{{ $product->stock }}</td>
                 <td>{{ $product->umkmProfile->status ?? '-' }}</td>
             </tr>
         @endforeach

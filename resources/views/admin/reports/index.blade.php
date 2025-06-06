@@ -44,6 +44,7 @@
                         <th>Kategori</th>
                         <th>UMKM</th>
                         <th>Harga</th>
+                        <th>Stock</th>
                         <th>Foto</th>
                         <th>Status UMKM</th>
                     </tr>
@@ -56,6 +57,7 @@
                         <td>{{ $product->category->nama_kategori ?? '-' }}</td>
                         <td>{{ $product->umkmProfile->nama_umkm ?? '-' }}</td>
                         <td>Rp {{ number_format($product->harga, 0, ',', '.') }}</td>
+                        <td>{{ $product->stock }}</td>
                         <td>
                             @if ($product->foto)
                                 <img src="{{ asset($product->foto) }}" alt="Foto" class="img-thumbnail" width="60">

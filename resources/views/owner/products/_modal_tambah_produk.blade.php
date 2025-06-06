@@ -34,6 +34,10 @@
                                     <input type="number" class="form-control" id="harga" name="harga" placeholder="Harga Produk" required>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="stock">Stock</label>
+                                <input type="number" class="form-control" id="stock" name="stock" min="0" value="0" required>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">

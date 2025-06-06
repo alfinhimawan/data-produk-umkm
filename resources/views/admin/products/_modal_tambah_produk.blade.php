@@ -65,6 +65,10 @@
                                 <label for="deskripsi">Deskripsi</label>
                                 <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Deskripsi Produk" required></textarea>
                             </div>
+                            <div class="form-group">
+                                <label for="stock">Stock</label>
+                                <input type="number" class="form-control" id="stock" name="stock" min="0" value="0" required>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -13,11 +13,13 @@ $(document).ready(function () {
         var nama = row.find("td").eq(1).text().trim();
         var kategori = row.find("td").eq(2).data("id") || "";
         var harga = row.find("td").eq(4).text().replace(/[^\d]/g, "");
+        var stock = row.find("td").eq(5).text().trim();
         var foto = row.find("img").attr("src");
         var deskripsi = row.data("deskripsi") || "";
         $("#edit_nama_produk").val(nama);
         $("#edit_id_kategori").val(kategori);
         $("#edit_harga").val(harga);
+        $("#edit_stock").val(stock);
         $("#preview-img-edit-produk").attr("src", foto);
         $("#edit_deskripsi").val(deskripsi);
         $("#formEditProduk").attr("action", "/owner/products/" + id);

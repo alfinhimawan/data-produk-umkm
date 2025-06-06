@@ -44,7 +44,7 @@
                     </select>
                 </div>
                 <div class="form-group col-md-3">
-                    <label for="filter_status">Status Produk</label>
+                    <label for="filter_status">Status UMKM</label>
                     <select class="form-control" id="filter_status" name="status">
                         <option value="" selected>Semua Status</option>
                         <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
@@ -110,6 +110,7 @@
                             <th>Kategori</th>
                             <th>UMKM</th>
                             <th>Harga</th>
+                            <th>Stock</th>
                             <th>Foto</th>
                             <th>Aksi</th>
                         </tr>
@@ -123,6 +124,7 @@
                                 </td>
                                 <td data-id="{{ $product->id_umkm }}">{{ $product->umkmProfile->nama_umkm ?? '-' }}</td>
                                 <td>Rp {{ number_format($product->harga, 0, ',', '.') }}</td>
+                                <td>{{ $product->stock }}</td>
                                 <td>
                                     @if ($product->foto)
                                         <img src="{{ asset($product->foto) }}" alt="Foto" class="img-thumbnail"
