@@ -52,32 +52,40 @@ function togglePasswordVisibility() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    if (!window.Swal) {
-        var script = document.createElement("script");
-        script.src = "https://cdn.jsdelivr.net/npm/sweetalert2@11";
-        script.onload = showAuthAlert;
-        document.head.appendChild(script);
-    } else {
-        showAuthAlert();
-    }
-});
-
-function showAuthAlert() {
-    const alertBox = document.getElementById("auth-alert");
-    if (alertBox) {
-        const type = alertBox.dataset.type;
-        const message = alertBox.dataset.message;
-        if (type && message) {
-            Swal.fire({
-                icon: type,
-                title: message,
-                showConfirmButton: false,
-                timer: 1800,
-            });
+// Toastr notification for auth (login, verification, etc)
+document.addEventListener('DOMContentLoaded', function() {
+    var alertDiv = document.getElementById('auth-alert');
+    if (alertDiv) {
+        var type = alertDiv.getAttribute('data-type');
+        var message = alertDiv.getAttribute('data-message');
+        toastr.options = {
+            closeButton: false,
+            debug: false,
+            newestOnTop: true,
+            progressBar: true,
+            positionClass: "toast-top-right",
+            preventDuplicates: true,
+            onclick: null,
+            showDuration: "300",
+            hideDuration: "1000",
+            timeOut: "4000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+        };
+        if(type === 'success') {
+            toastr.success(message);
+        } else if(type === 'error') {
+            toastr.error(message);
+        } else if(type === 'info') {
+            toastr.info(message);
+        } else if(type === 'warning') {
+            toastr.warning(message);
         }
     }
-}
+});
 
 VANTA.WAVES({
     el: "#vanta-bg",

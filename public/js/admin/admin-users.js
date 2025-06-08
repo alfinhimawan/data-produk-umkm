@@ -133,9 +133,15 @@ $(document).ready(function () {
         var form = this;
         if ($(form).find('input[name="_method"]').val() === "DELETE") {
             e.preventDefault();
+            let userName = $(form).closest('tr').find('td').eq(1).text().trim();
+            let userRole = $(form).closest('tr').find('td').eq(3).text().trim();
+            let confirmText = "Data user akan dihapus permanen!";
+            if (userRole.toLowerCase() === 'umkm_owner') {
+                confirmText = "Akun owner akan dihapus (soft delete). Data tetap tersimpan di database untuk keperluan audit. Lanjutkan?";
+            }
             Swal.fire({
                 title: "Yakin hapus user?",
-                text: "Data user akan dihapus permanen!",
+                text: confirmText,
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#d33",

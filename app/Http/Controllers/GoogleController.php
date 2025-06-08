@@ -25,11 +25,13 @@ class GoogleController extends Controller
             return redirect()->route('login')->with('error', 'Gagal login dengan Google.');
         }
 
-        $user = User::where('email', $googleUser->getEmail())
+        // Cari user owner (termasuk yang soft delete)
+        $user = User::withTrashed()->where('email', $googleUser->getEmail())
             ->where('role', 'umkm_owner')
             ->first();
 
         if (!$user) {
+            // Jika tidak ada, buat user baru
             $user = User::create([
                 'name' => $googleUser->getName() ?? $googleUser->getNickname() ?? 'Owner',
                 'email' => $googleUser->getEmail(),
@@ -41,10 +43,19 @@ class GoogleController extends Controller
             ]);
             Mail::to($user->email)->send(new OwnerGoogleVerificationMail($user));
         } else {
+            // Jika user soft delete, restore dan update data penting
+            if ($user->trashed()) {
+                $user->restore();
+                $user->status = 'pending';
+                $user->verification_token = Str::random(64);
+                Mail::to($user->email)->send(new OwnerGoogleVerificationMail($user));
+            }
+            // Update data Google terbaru
+            $user->name = $googleUser->getName() ?? $googleUser->getNickname() ?? $user->name;
             if ($googleUser->getAvatar()) {
                 $user->foto = $googleUser->getAvatar();
-                $user->save();
             }
+            $user->save();
         }
 
         if ($user && $user->status === 'nonaktif') {
@@ -52,7 +63,7 @@ class GoogleController extends Controller
         }
 
         if ($user && $user->status === 'pending') {
-            return redirect()->route('login')->with('info', 'Akun Anda berhasil dibuat. Silakan cek email Anda untuk verifikasi sebelum login.');
+            return redirect()->route('login')->with('success', 'Verification email sent to ' . $user->email);
         }
 
         Auth::login($user);

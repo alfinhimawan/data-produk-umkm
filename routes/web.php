@@ -31,7 +31,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // ------------------- GOOGLE AUTH (OWNER) -------------------
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
-Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
 Route::get('verify/{token}', [GoogleController::class, 'verifyEmail'])->name('google.verify');
 
 // ------------------- ADMIN -------------------
@@ -44,6 +44,8 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('reports/export', [ReportController::class, 'export'])->name('reports.export');
     Route::resource('umkm-profiles', UMKMProfileController::class)->except(['create', 'store', 'edit', 'update']);
     Route::patch('umkm-profiles/{id}/status/{status}', [UMKMProfileController::class, 'setStatus'])->name('umkm-profiles.setStatus');
+    Route::get('/admin/users/trashed', [UserController::class, 'trashed'])->name('users.trashed');
+    Route::post('/admin/users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
 });
 
 // ------------------- OWNER -------------------

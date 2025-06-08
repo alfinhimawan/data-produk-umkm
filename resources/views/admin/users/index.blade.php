@@ -5,9 +5,14 @@
 @section('content')
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Data User UMKM</h1>
-        <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalTambahUser">
-            <i class="fas fa-plus"></i> Tambah User
-        </a>
+        <div>
+            <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalTambahUser">
+                <i class="fas fa-plus"></i> Tambah User
+            </a>
+            <a href="{{ route('users.trashed') }}" class="btn btn-warning btn-sm ml-2">
+                <i class="fas fa-trash-restore"></i> User Owner Terhapus
+            </a>
+        </div>
     </div>
 
     <!-- Alert modern -->

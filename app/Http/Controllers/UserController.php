@@ -134,10 +134,20 @@ class UserController extends Controller
     public function destroy($id_users)
     {
         $user = User::findOrFail($id_users);
-        if ($user->role === 'umkm_owner') {
-            return redirect()->route('users.index')->with('error', 'Admin tidak diizinkan menghapus akun owner!');
-        }
         $before = $user->toArray();
+        // Konfirmasi khusus jika owner
+        if ($user->role === 'umkm_owner') {
+            $user->delete();
+            AuditLog::create([
+                'id_users' => auth()->id(),
+                'action' => 'soft_delete_owner',
+                'target_table' => 'users',
+                'target_id' => $user->id_users,
+                'before' => json_encode($before),
+                'after' => null,
+            ]);
+            return redirect()->route('users.index')->with('success', 'Akun owner berhasil dihapus (soft delete).');
+        }
         $user->delete();
         // Audit log untuk hapus admin
         AuditLog::create([
@@ -149,5 +159,32 @@ class UserController extends Controller
             'after' => null,
         ]);
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
+    }
+
+    /**
+     * Display a listing of trashed owners.
+     */
+    public function trashed()
+    {
+        $users = User::onlyTrashed()->where('role', 'umkm_owner')->get();
+        return view('admin.users.trashed', compact('users'));
+    }
+
+    /**
+     * Restore a trashed owner.
+     */
+    public function restore($id_users)
+    {
+        $user = User::onlyTrashed()->findOrFail($id_users);
+        $user->restore();
+        AuditLog::create([
+            'id_users' => auth()->id(),
+            'action' => 'restore_owner',
+            'target_table' => 'users',
+            'target_id' => $user->id_users,
+            'before' => null,
+            'after' => json_encode($user->toArray()),
+        ]);
+        return redirect()->route('users.trashed')->with('success', 'Akun owner berhasil dipulihkan.');
     }
 }
