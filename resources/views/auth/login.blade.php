@@ -130,3 +130,7 @@
 </body>
 
 </html>
+
+{{--
+    NOTE: All asset and form URLs in this file use Laravel's asset(), route(), or url() helpers. Do not hardcode http://, https://, or localhost. This ensures compatibility with HTTPS/ngrok and correct asset loading.
+--}}
