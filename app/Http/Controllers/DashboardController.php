@@ -17,9 +17,9 @@ class DashboardController extends Controller
         $jumlahKategori = Category::count();
         $jumlahUser = User::where('status', 'aktif')->count();
 
-        $umkmPerBulan = UMKMProfile::selectRaw('MONTH(created_at) as bulan, COUNT(*) as total')
+        $umkmPerBulan = UMKMProfile::selectRaw("EXTRACT(MONTH FROM created_at) as bulan, COUNT(*) as total")
             ->whereYear('created_at', date('Y'))
-            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->groupBy(DB::raw("EXTRACT(MONTH FROM created_at)"))
             ->orderBy('bulan')
             ->pluck('total', 'bulan')->toArray();
 
