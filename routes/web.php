@@ -28,12 +28,12 @@ use App\Http\Controllers\OwnerUMKMProfileController;
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::post('/login-owner', [GoogleController::class, 'loginOwnerWithEmail'])->name('login.owner');
 
 // ------------------- GOOGLE AUTH (OWNER) -------------------
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])->name('google.callback');
 Route::get('verify/{token}', [GoogleController::class, 'verifyEmail'])->name('google.verify');
+Route::post('/login-owner', [GoogleController::class, 'loginOwnerWithEmail'])->name('login.owner');
 
 // ------------------- ADMIN -------------------
 Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
