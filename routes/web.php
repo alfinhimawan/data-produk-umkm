@@ -28,6 +28,7 @@ use App\Http\Controllers\OwnerUMKMProfileController;
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.attempt');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/login-owner', [GoogleController::class, 'loginOwnerWithEmail'])->name('login.owner');
 
 // ------------------- GOOGLE AUTH (OWNER) -------------------
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');

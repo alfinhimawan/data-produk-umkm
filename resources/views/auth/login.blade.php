@@ -19,7 +19,7 @@
     <main>
         <div class="box">
             <div class="inner-box">
-                <div class="forms-wrap">
+                <div class="forms-wrap {{ session('show_owner') ? 'show-sign-up' : '' }}">
                     <form action="{{ route('login.attempt') }}" method="POST" autocomplete="off" class="sign-in-form">
                         @csrf
                         <div class="logo">
@@ -28,7 +28,9 @@
                         </div>
 
                         <div class="heading">
-                            <h2>Welcome Back</h2>
+                            <h2>Welcome Back Admin</h2>
+                            <h6>Owner only login | </h6>
+                            <a href="#" class="toggle">Owner Login</a>
                         </div>
 
                         @if ($errors->any())
@@ -51,7 +53,8 @@
                                 style="display:none;"></div>
                         @endif
                         @if (session('info'))
-                            <div id="auth-alert" data-type="info" data-message="{{ session('info') }}" style="display:none;"></div>
+                            <div id="auth-alert" data-type="info" data-message="{{ session('info') }}"
+                                style="display:none;"></div>
                         @endif
 
                         <div class="actual-form">
@@ -76,8 +79,52 @@
 
                             <input type="submit" value="Sign In" class="sign-btn" />
 
+                            <p class="text">
+                                Forgotten your password or your login details?
+                                <a href="#">Get help</a> signing in
+                            </p>
+                        </div>
+                    </form>
+                    <form action="{{ route('login.owner') }}" method="POST" autocomplete="off" class="sign-up-form">
+                        @csrf
+                        <div class="logo">
+                            <img src="{{ asset('img/logo.png') }}" alt="easyclass" />
+                            <h4>MyUMKM</h4>
+                        </div>
+                        <div class="heading">
+                            <h2>Welcome Back Owner</h2>
+                            <h6>Login with Google or registered email | </h6>
+                            <a href="#" class="toggle">Admin Login</a>
+                        </div>
+                        @if ($errors->any() && session('show_owner'))
+                            <div class="alert alert-danger"
+                                style="font-size:0.95rem; border-radius:0.5rem; margin-bottom:1rem;">
+                                <ul class="mb-0" style="padding-left:1.2rem;">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        @if (session('success') && session('show_owner'))
+                            <div id="auth-alert" data-type="success" data-message="{{ session('success') }}"
+                                style="display:none;"></div>
+                        @endif
+                        @if (session('error') && session('show_owner'))
+                            <div id="auth-alert" data-type="error" data-message="{{ session('error') }}"
+                                style="display:none;"></div>
+                        @endif
+                        <div class="actual-form">
+                            <div class="input-wrap">
+                                <div class="label-with-icon">
+                                    <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                                    <label>Email</label>
+                                </div>
+                                <input type="email" name="email" class="input-field" autocomplete="off" required />
+                            </div>
+                            <input type="submit" value="Sign In with Email" class="sign-btn" />
                             <div class="Or-Sign-Up-Using">
-                                <span class="or-text">Owner Sign In Using</span>
+                                <span class="or-text">Or Sign In Using</span>
                                 <div class="login-social-icons">
                                     <a href="{{ route('google.login') }}" class="social-icon google"><img
                                             src="{{ asset('img/social/google.svg') }}" alt="Google" /></a>
@@ -87,7 +134,6 @@
                                             src="{{ asset('img/social/apple.svg') }}" alt="Apple" /></a>
                                 </div>
                             </div>
-
                             <p class="text">
                                 Forgotten your password or your login details?
                                 <a href="#">Get help</a> signing in
@@ -106,9 +152,9 @@
                     <div class="text-slider">
                         <div class="text-wrap">
                             <div class="text-group">
-                                <h2>Create your own courses</h2>
-                                <h2>Customize as you like</h2>
-                                <h2>Invite students to your class</h2>
+                                <h2>Grow your UMKM with us</h2>
+                                <h2>Easy product & profile management</h2>
+                                <h2>Reach more customers online</h2>
                             </div>
                         </div>
 

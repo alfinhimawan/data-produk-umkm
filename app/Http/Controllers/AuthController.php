@@ -24,6 +24,7 @@ class AuthController extends Controller
         $user = \App\Models\User::where('email', $credentials['email'])->first();
         if ($user) {
             if ($user->role !== 'admin') {
+                // Jika login gagal di form admin, tetap tampilkan form admin
                 return back()->with('error', 'Login hanya untuk admin. Silakan gunakan login Google untuk Owner.')->withInput();
             }
             if (\Illuminate\Support\Facades\Hash::check($credentials['password'], $user->password)) {
@@ -31,9 +32,11 @@ class AuthController extends Controller
                 $successMsg = 'Login berhasil! Selamat datang ' . $user->name . ' (login sebagai Admin)';
                 return redirect()->route('admin.dashboard')->with('success', $successMsg);
             } else {
+                // Jika password salah di form admin, tetap tampilkan form admin
                 return back()->with('error', 'Password salah.')->withInput();
             }
         }
+        // Jika email tidak ditemukan, tetap tampilkan form admin
         return back()->with('error', 'Email tidak ditemukan.')->withInput();
     }
 

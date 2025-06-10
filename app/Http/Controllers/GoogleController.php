@@ -94,4 +94,18 @@ class GoogleController extends Controller
         }
         return redirect()->route('login')->with('error', 'Token verifikasi tidak valid.');
     }
+
+    // Login owner dengan email saja (setelah pernah login Google)
+    public function loginOwnerWithEmail(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+        $user = \App\Models\User::where('email', $request->email)->where('role', 'umkm_owner')->first();
+        if ($user) {
+            \Illuminate\Support\Facades\Auth::login($user);
+            return redirect()->route('owner.dashboard')->with('success', 'Login Owner berhasil!');
+        }
+        return back()->with('error', 'Email tidak ditemukan atau bukan owner.')->withInput()->with('show_owner', true);
+    }
 }
