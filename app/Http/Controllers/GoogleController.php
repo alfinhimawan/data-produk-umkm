@@ -101,8 +101,14 @@ class GoogleController extends Controller
         $request->validate([
             'email' => ['required', 'email'],
         ]);
-        $user = \App\Models\User::where('email', $request->email)->where('role', 'umkm_owner')->first();
+        $user = \App\Models\User::where('email', $request->email)
+            ->where('role', 'umkm_owner')
+            ->first();
+
         if ($user) {
+            if ($user->status !== 'aktif') {
+                return back()->with('error', 'Akun Anda belum diverifikasi atau nonaktif.')->withInput()->with('show_owner', true);
+            }
             \Illuminate\Support\Facades\Auth::login($user);
             return redirect()->route('owner.dashboard')->with('success', 'Login Owner berhasil!');
         }

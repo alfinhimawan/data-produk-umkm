@@ -22,9 +22,9 @@ class OwnerDashboardController extends Controller
         $kontakUMKM = $umkm->kontak ?? '-';
 
         // Grafik penambahan produk per bulan (line chart)
-        $produkPerBulan = $umkm ? Product::selectRaw('MONTH(created_at) as bulan, COUNT(*) as total')
+        $produkPerBulan = $umkm ? Product::selectRaw('EXTRACT(MONTH FROM created_at) as bulan, COUNT(*) as total')
             ->where('id_umkm', $umkm->id_umkm)
-            ->whereYear('created_at', date('Y'))
+            ->whereRaw('EXTRACT(YEAR FROM created_at) = ?', [date('Y')])
             ->groupBy('bulan')
             ->orderBy('bulan')
             ->pluck('total', 'bulan')->toArray() : [];
